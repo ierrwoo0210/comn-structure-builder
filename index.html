@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CoMn 구조 생성기</title>
+<style>
+:root{color-scheme:light;--ink:#1e2d3d;--muted:#617184;--line:#dce3eb;--bg:#f3f6fa;--accent:#325bb7;--blue:#376eb7;--orange:#d48670;--green:#73a759;--bad:#a83138}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}button,input,select{outline-offset:3px}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #95b6ff}button{border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:8px 13px}button:hover:not(:disabled){border-color:#9caec5;background:#f7faff}.primary{background:var(--accent);border-color:var(--accent);color:white;font-weight:650}.primary:hover:not(:disabled){background:#284b99;color:white}.quiet{border-color:transparent;background:transparent;color:var(--muted)}.app{max-width:1500px;margin:auto;padding:24px 28px 32px}.top{display:flex;gap:18px;justify-content:space-between;align-items:center;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px}.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:#e1e9f8;color:#315a9d;font-size:19px;font-weight:800}.brand h1{font-size:24px;letter-spacing:-.6px;margin:0}.brand p{margin:2px 0 0;font-size:13px;color:var(--muted)}.tag{font-size:12px;border:1px solid var(--line);padding:5px 10px;border-radius:20px;color:var(--muted);white-space:nowrap}.types{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}.type{display:flex;gap:12px;text-align:left;align-items:center;padding:13px 16px;background:#fff;border-radius:11px;min-height:78px}.type[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent);background:#f1f5ff}.type svg{width:40px;height:40px;flex:none}.type strong{display:block;font-size:15px}.type small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.layout{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;align-items:start}.controls,.viewer,.export,.notes{background:white;border:1px solid var(--line);border-radius:12px}.controls{padding:20px}.section-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:16px}.section-heading h2{margin:0;font-size:16px}.section-heading button{font-size:12px;padding:5px 8px}.field{margin:0 0 22px}.field-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}.field label{font-weight:600;font-size:14px}.value{display:flex;gap:5px;align-items:center;color:var(--muted);font-size:12px}.value input{width:91px;border:1px solid var(--line);border-radius:6px;padding:5px 7px;color:var(--ink);font-variant-numeric:tabular-nums;text-align:right;background:#fff}.value.wide input{width:105px}input[type=range]{width:100%;accent-color:var(--accent);margin:0;display:block;height:22px}.hint{color:var(--muted);font-size:12px;margin:7px 0 0;line-height:1.65}.ticks{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;margin-top:3px}.preset-cuts{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.preset-cuts button{padding:3px 6px;font-size:11px}.derived{padding:12px 13px;background:#f4f7fb;border-radius:8px;margin:6px 0 18px;font-size:13px}.derived div{display:flex;justify-content:space-between;gap:10px;margin:3px 0}.derived span{color:var(--muted)}.derived b{font-weight:650;font-variant-numeric:tabular-nums;text-align:right}.advanced{border-top:1px solid var(--line);padding-top:14px;margin-top:10px}.advanced summary{font-weight:600;cursor:pointer;font-size:13px;margin-bottom:16px}.advanced .field{margin-bottom:17px}select{border:1px solid var(--line);background:white;border-radius:6px;padding:7px;max-width:100%;color:var(--ink)}.full-select{width:100%}.files{display:flex;gap:5px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.files button{font-size:12px;padding:6px 9px}.right{min-width:0;display:flex;flex-direction:column;gap:14px}.viewer{overflow:hidden}.view-head{padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);flex-wrap:wrap}.seg{display:flex;gap:3px;background:#f1f4f8;padding:3px;border-radius:8px}.seg button{padding:5px 10px;font-size:12px;border-color:transparent;background:transparent;border-radius:5px}.seg button[aria-pressed=true]{background:white;box-shadow:0 1px 3px #20324616;color:var(--accent);font-weight:650}.views{display:flex;gap:5px;flex-wrap:wrap}.views button{font-size:12px;padding:5px 9px}.views button[aria-pressed=true]{background:#e9f0fc;border-color:#92abd8;color:#294f94}.canvas-wrap{position:relative;height:465px;background:#fafbfd}canvas{display:block;width:100%;height:100%;touch-action:none}.viewer-caption{position:absolute;top:16px;left:19px;pointer-events:none;max-width:75%}.viewer-caption strong{display:block;font-size:15px}.viewer-caption span{font-size:12px;color:var(--muted)}.empty-note{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.empty-note>div{max-width:320px;padding:16px;background:#fffffff0;border:1px solid var(--line);border-radius:10px;text-align:center;box-shadow:0 4px 22px #1e2d3d09}.empty-note p{margin:0;color:var(--muted);font-size:13px}.view-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:11px 18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}.legend{display:flex;gap:15px;align-items:center;flex-wrap:wrap}.legend span{display:flex;align-items:center;gap:6px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block}.view-options{display:flex;gap:13px;align-items:center}.view-options label{display:flex;gap:5px;align-items:center;cursor:pointer}.export{padding:18px}.export-top{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:13px}.export-top h2{font-size:16px;margin:0 0 4px}.export-top p{font-size:12px;color:var(--muted);margin:0}.counts{display:flex;gap:20px;flex-wrap:wrap;margin:10px 0 16px;font-variant-numeric:tabular-nums}.counts div{font-size:12px;color:var(--muted)}.counts b{display:block;font-size:21px;color:var(--ink);font-weight:650}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.actions .primary{min-width:190px}.actions select{font-size:12px;padding:9px}.progress-wrap{margin-top:14px}.progress-label{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted);margin-bottom:5px}progress{width:100%;height:8px;border:0;accent-color:var(--accent)}.status{font-size:13px;margin-top:10px;line-height:1.7}.status:empty{display:none}.validation{padding:13px 15px;margin-bottom:14px;border:1px solid #e5c2c4;border-radius:8px;background:#fff7f7;color:var(--bad);font-size:13px}.validation p{margin:3px 0}.validation .fix{margin-top:8px;color:var(--bad);font-size:12px}.warnings{font-size:12px;color:#71591d;background:#fffaf0;border:1px solid #eedfb9;border-radius:8px;padding:10px 13px;margin-bottom:14px}.warnings p{margin:3px 0}.notes{padding:15px 18px;font-size:12px;color:var(--muted)}.notes summary{font-size:13px;font-weight:600;color:var(--ink);cursor:pointer}.notes p{margin:9px 0}.notes code{font-size:12px;background:#f0f3f8;padding:1px 4px;border-radius:3px}.notes ul{padding-left:20px;margin:8px 0}.footer{margin:17px 0 0;color:var(--muted);font-size:12px;text-align:center}.shape-pill{display:inline-block;padding:3px 7px;background:#edf2f9;border-radius:5px;color:#4e6380;font-size:11px;margin-top:5px}.check-note{font-size:12px;color:var(--muted);margin-top:12px}a{color:var(--accent)}[hidden]{display:none!important}
+@media(min-width:1400px){.canvas-wrap{height:520px}}@media(max-width:1000px){.app{padding:18px}.layout{grid-template-columns:300px minmax(0,1fr)}.type{padding:10px}.type svg{width:29px}.type small{font-size:11px}.canvas-wrap{height:440px}.view-head{padding:12px}.counts{gap:15px}}@media(max-width:760px){.app{padding:14px}.top{margin-bottom:15px}.brand h1{font-size:21px}.tag{display:none}.types{grid-template-columns:repeat(2,1fr)}.layout{display:flex;flex-direction:column}.controls,.right{width:100%}.controls{padding:16px}.canvas-wrap{height:390px}.field{margin-bottom:18px}.right{gap:12px}.export-top{flex-wrap:wrap}.counts{gap:22px}.view-foot{padding:10px 12px}.type small{font-size:12px}}@media(max-width:390px){.app{padding:10px}.type{gap:8px}.type strong{font-size:13px}.type small{font-size:11px}.view-head{gap:9px}.canvas-wrap{height:335px}.actions{align-items:stretch}.actions .primary{width:100%}.actions select{width:100%}}
+.atom-controls{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px 18px;border-bottom:1px solid var(--line);font-size:12px;color:var(--muted);background:#fafbfd}.atom-controls label{display:flex;align-items:center;gap:7px}.atom-controls input[type=range]{width:105px}.atom-controls output{min-width:30px;font-variant-numeric:tabular-nums}.atom-controls button{font-size:12px;padding:5px 9px}.atom-help{padding:8px 18px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}.empty-note button{pointer-events:auto;margin-top:12px;font-size:13px}.viewer-caption{max-width:calc(100% - 38px);z-index:3}.empty-note{z-index:4}.viewer-caption span{display:block;max-width:660px;line-height:1.5}.seg{flex-wrap:wrap}@media(max-width:760px){.atom-controls{gap:10px;padding:10px 12px}.atom-help{padding:8px 12px}.viewer-caption span{font-size:11px}}
+</style>
+<style>.ratio-repair{margin:12px 0 0;padding:11px;font-size:12px}.ratio-repair button{margin-top:9px;width:100%;font-size:12px;white-space:normal}.ratio-repair p{line-height:1.65}</style>
+</head>
+<body>
+<main class="app">
+ <header class="top"><div class="brand"><div class="mark" aria-hidden="true">Co</div><div><h1>CoMn 구조 생성기</h1><p>Co₃O₄ / Mn₃O₄ · 크기 설정부터 XYZ까지</p></div></div><span class="tag">오프라인 사용 · 완화 전 초기 구조</span></header>
+ <nav class="types" aria-label="구조 유형">
+  <button type="button" class="type" data-type="shallow" aria-pressed="false"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="6" y="6" width="32" height="32" fill="#d48670"/><rect x="8" y="8" width="28" height="28" fill="#376eb7"/></svg><span><strong>Shallow shell</strong><small>얇은 셸 · 정육면체 외곽</small></span></button>
+  <button type="button" class="type" data-type="CL" aria-pressed="true"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M12 3H32L42 14V30L32 41H12L2 30V14Z" fill="#d48670"/><path d="M12 3L32 41M32 3L12 41M2 14L42 30M42 14L2 30" stroke="#b67865" fill="none"/><rect x="13" y="13" width="18" height="18" fill="#376eb7"/></svg><span><strong>CoMn-CL</strong><small>CL · 기본 입방팔면체</small></span></button>
+  <button type="button" class="type" data-type="CL_I" aria-pressed="false"><svg viewBox="0 0 44 44" aria-hidden="true"><path d="M14 2H30L42 14V30L30 42H14L2 30V14Z" fill="#73a759"/><rect x="10" y="10" width="24" height="24" fill="#d48670"/><rect x="15" y="15" width="14" height="14" fill="#376eb7"/></svg><span><strong>CoMn-CL+I</strong><small>CL 위에 island 성장</small></span></button>
+  <button type="button" class="type" data-type="noGB" aria-pressed="false"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="10" y="19" width="24" height="23" fill="#376eb7"/><path d="M10 19L2 11L9 3H35L42 11L34 19Z" fill="#73a759"/></svg><span><strong>CoMn-no GB</strong><small>한 면에 붙은 단일 섬</small></span></button>
+ </nav>
+ <div class="layout">
+  <aside class="controls" aria-label="생성 파라미터">
+   <div class="section-heading"><h2>크기와 절단</h2><button id="preset" type="button">이전 11 nm 설정</button></div>
+   <div class="field"><div class="field-row"><label for="core-number">Core 한 변</label><div class="value"><input id="core-number" type="number" min="1" max="40" step="0.1" value="11" data-key="coreNm"><span>nm</span></div></div><input id="core-range" type="range" min="1" max="40" step="0.1" value="11" data-key="coreNm" aria-label="Core 한 변 슬라이더"><p class="hint">모든 구조에서 정육면체 코어를 유지합니다.</p></div>
+   <div class="field" id="cl-field"><div class="field-row"><label for="cl-number">CL 두께</label><div class="value"><input id="cl-number" type="number" min="0" max="20" step="0.1" value="3" data-key="clNm"><span>nm</span></div></div><input id="cl-range" type="range" min="0" max="20" step="0.1" value="3" data-key="clNm" aria-label="CL 두께 슬라이더"><p class="hint" id="cl-hint">코어 면에서 CL 바깥면까지의 높이입니다.</p></div>
+   <div class="field" id="height-field" hidden><div class="field-row"><label for="height-number" id="height-label">Shell 두께</label><div class="value"><input id="height-number" type="number" min="0.01" max="20" step="0.01" value="2" data-key="heightNm"><span>nm</span></div></div><input id="height-range" type="range" min="0.01" max="20" step="0.01" value="2" data-key="heightNm" aria-label="셸 또는 섬 높이 슬라이더"><p class="hint" id="height-hint"></p></div>
+   <div class="field"><div class="field-row"><label for="ratio-number">절단비 H/R</label><div class="value wide"><input id="ratio-number" type="number" min="0.3333333333333333" max="1" step="any" value="0.5" data-key="ratio" aria-describedby="ratio-hint ratio-repair-message"></div></div><input id="ratio-range" type="range" min="0.3333333333333333" max="1" step="any" value="0.5" data-key="ratio" aria-label="절단비 슬라이더"><div class="ticks"><span>1/3 · cube</span><span>1/2</span><span>1 · octahedron</span></div><div class="preset-cuts"><button type="button" data-ratio="0.3333333333333333">Cube 1/3</button><button type="button" data-ratio="0.5">Cuboctahedron 1/2</button><button type="button" data-ratio="0.6666666666666666">Truncated oct. 2/3</button></div><p class="hint" id="ratio-hint">H/R이 커지면 축 방향의 평평한 면이 작아지고 팔면체에 가까워집니다. 코어 크기와 셸 높이에 따라 허용 상한이 달라집니다.</p><span class="shape-pill" id="shape-label">입방팔면체</span><div id="ratio-repair" class="validation ratio-repair" role="status" hidden><p id="ratio-repair-message"></p><button id="apply-height-repair" type="button">필요한 높이 적용</button></div></div>
+   <div class="derived" id="dimensions"><div><span>전체 셸 높이</span><b id="total-height">3.000 nm</b></div><div><span>전체 외곽 폭</span><b id="outer-size">17 × 17 × 17 nm</b></div><div id="contact-row" hidden><span>섬 접촉 폭</span><b id="contact-size">11.000 nm</b></div><div><span>현재 허용 절단비</span><b id="max-ratio">≤ 0.515152</b></div><div title="3차원 꼭짓점에서 경사 절단 평면까지의 수직 거리입니다. 정면 투영에서 보이는 CL 폭과 다릅니다."><span id="corner-clearance-label">코어 꼭짓점 → 경사면</span><b id="corner-clearance">—</b></div></div>
+   <details class="advanced"><summary>추가 파라미터</summary>
+    <div id="island-options" hidden><div class="field"><div class="field-row"><label for="face-select">섬 성장 면</label></div><select id="face-select" class="full-select" aria-label="섬 성장 면"><option value="+Z">+Z · 위쪽</option><option value="-Z">−Z · 아래쪽</option><option value="+X">+X</option><option value="-X">−X</option><option value="+Y">+Y</option><option value="-Y">−Y</option></select></div><div class="field"><div class="field-row"><label for="contact-number">접촉 폭 / 코어 폭</label><div class="value"><input id="contact-number" type="number" min="0.1" max="1" step="0.01" value="1" data-key="contactFraction"><span>배</span></div></div><input id="contact-range" type="range" min="0.1" max="1" step="0.01" value="1" data-key="contactFraction" aria-label="섬 접촉 폭 비율"><p class="hint">1이면 접촉면이 코어 면 전체를 덮습니다. 위쪽에서 벌어지는 섬의 최대 폭과는 다릅니다.</p></div></div>
+    <div class="field"><div class="field-row"><label for="vacuum-number">진공 여백 · 한쪽</label><div class="value"><input id="vacuum-number" type="number" min="0.2" max="10" step="0.1" value="1.2" data-key="vacuumNm"><span>nm</span></div></div><p class="hint">원자 형상은 유지하고 계산 셀의 여백을 바꿉니다.</p></div>
+    <div class="field"><div class="field-row"><label for="lattice-number">공통 격자상수</label><div class="value"><input id="lattice-number" type="number" min="7" max="10" step="0.001" value="8.084" data-key="latticeA"><span>Å</span></div></div><p class="hint">코어와 Mn 영역에 함께 쓰는 cubic-parent 격자입니다. 기본값 8.084 Å.</p></div>
+   </details>
+   <div class="files"><button id="save-settings" type="button">설정 저장</button><button id="load-settings" type="button">설정 불러오기</button><input id="settings-file" type="file" accept=".json,application/json" hidden></div>
+  </aside>
+  <section class="right" aria-label="미리보기와 파일 생성">
+   <div class="viewer"><div class="view-head"><div class="seg" aria-label="미리보기 표시"><button type="button" data-mode="geometry" aria-pressed="true">3D 형상</button><button type="button" data-mode="corner" aria-pressed="false">꼭짓점 단면</button><button type="button" data-mode="atoms" aria-pressed="false">3D 원자</button><button type="button" data-mode="section" aria-pressed="false">원자 단면</button></div><div class="views" aria-label="관찰 방향"><button type="button" data-view="iso" aria-pressed="true">입체</button><button type="button" data-view="X" aria-pressed="false">[100]</button><button type="button" data-view="Y" aria-pressed="false">[010]</button><button type="button" data-view="Z" aria-pressed="false">[001]</button></div></div>
+    <div id="atom-controls" class="atom-controls" hidden><label for="atom-scale">원자 표시 크기 <input id="atom-scale" type="range" min="0.4" max="2" step="0.1" value="1"><output id="atom-scale-value" for="atom-scale">1.0×</output></label><label><input id="atom-cutaway" type="checkbox">앞쪽 절반 열기</label><button id="reset-view" type="button">화면 맞춤</button></div>
+    <div class="canvas-wrap"><canvas id="preview" aria-label="나노입자 3차원 미리보기"></canvas><div class="viewer-caption"><strong id="preview-title">CoMn-CL</strong><span id="preview-detail">드래그로 회전 · 휠로 확대</span></div><div id="atom-empty" class="empty-note" hidden><div><p id="atom-empty-message">원자를 생성하면 실제 원자 배치를 볼 수 있습니다.</p><button id="preview-generate" class="primary" type="button">현재 설정으로 원자 생성</button></div></div></div>
+    <div id="atom-help" class="atom-help" hidden>드래그: 회전 · 휠: 확대 · Shift+드래그: 이동 · 구 크기는 표시용이며 XYZ 좌표는 그대로입니다.</div>
+    <div class="view-foot"><div class="legend"><span><i class="dot" style="background:var(--blue)"></i>Co₃O₄ core</span><span><i class="dot" style="background:var(--orange)"></i><span id="cl-legend-label">노출된 Shallow / CL 표면</span></span><span><i class="dot" style="background:var(--green)"></i><span id="island-legend-label">노출된 Island 표면</span></span><span id="oxygen-legend" hidden><i class="dot" style="background:#a7b2be"></i>O</span></div><div class="view-options"><label><input id="show-core" type="checkbox" checked>코어 표시</label><label><input id="show-oxygen" type="checkbox">산소 표시</label></div></div>
+   </div>
+   <div class="export"><div class="export-top"><div><h2>원자 구조와 XYZ</h2><p id="generation-summary">형상을 확인한 뒤 생성하세요. 다운로드에는 모든 원자가 포함됩니다.</p></div><span class="tag" id="model-state">완화 전 · cubic parent</span></div>
+    <div id="errors" class="validation" role="alert" hidden></div><div id="warnings" class="warnings" hidden></div>
+    <div class="counts" aria-label="생성된 원자 수"><div>전체 원자<b id="count-total">—</b></div><div>Co<b id="count-co">—</b></div><div>Mn<b id="count-mn">—</b></div><div>O<b id="count-o">—</b></div></div>
+    <div class="actions"><button id="download" class="primary" type="button">XYZ 생성·다운로드</button><button id="generate" type="button">원자만 생성</button><select id="format-select" aria-label="XYZ 형식"><option value="extended">Extended XYZ · 셀·영역 포함</option><option value="plain">일반 XYZ · 원소·좌표</option></select><button id="cancel" type="button" hidden>취소</button></div>
+    <div class="progress-wrap" id="progress-wrap" hidden><div class="progress-label"><span id="progress-text">원자를 생성하고 있습니다.</span><span id="progress-percent">0%</span></div><progress id="progress" max="1" value="0"></progress></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div><div class="check-note" id="actual-size"></div>
+   </div>
+   <details class="notes"><summary>크기 정의와 모델 범위</summary><p><b>3D 원자</b>는 XYZ와 같은 좌표를 개별 구로 표시합니다. 원자 표시 크기, 산소·코어 숨김, 앞쪽 절반 열기는 미리보기만 바꾸며 다운로드 파일에는 모든 원자가 포함됩니다.</p><p><b>Core</b>는 정육면체 한 변입니다. <b>CL+I</b>의 전체 셸 높이는 CL 두께와 island 추가 높이의 합입니다. <b>no-GB</b>의 섬 높이는 코어 면에서 꼭대기까지입니다.</p><p><b>절단비 H/R</b>: H는 코어 중심에서 바깥 축 면까지, R은 <code>|x|+|y|+|z| ≤ R</code>의 절편입니다. 1/3은 cube, 1/2는 cuboctahedron, 2/3는 정규 truncated octahedron입니다. 코어를 보존할 수 없는 조합은 생성하지 않습니다.</p><p>no-GB는 접촉부 위의 {112} 방향 면이 옆으로 벌어질 수 있습니다. 기본 11 nm 코어의 접촉 폭은 11 nm, 섬 높이는 5 nm, 최대 가로 폭은 17 nm입니다. 별도의 자동 축소는 없습니다.</p><p>이전 코드와 같은 56원자 cubic spinel 단위 셀과 fractional registry (0.318, 0.318, 0.318)를 사용합니다. 코어 밖 Co 자리를 Mn으로 바꾸며 산소 좌표는 유지합니다. 실제 정방정계 strain, grain별 방위차, 완화된 grain boundary는 미리 부여하지 않습니다.</p><p>입력한 명목 치수와 원자의 실제 끝점 사이에는 격자 간격에 따른 차이가 있습니다. 자유 표면의 원자는 절단 결과대로 남습니다. 원자 수·배위·안정성이 모든 사용자 설정에서 자동으로 검증되는 것은 아닙니다.</p><p>모든 처리는 이 브라우저에서 이루어집니다. 다운로드 좌표 단위는 Å, Extended XYZ는 <code>pbc="F F F"</code>입니다. 브라우저 메모리를 위해 최대 200만 원자까지 지원합니다.</p></details>
+  </section>
+ </div><p class="footer">기본 설정은 이전 11 nm 모델을 재현합니다. 파랑·주황·초록은 영역 구분입니다.</p>
+</main>
+<script id="engine-code">/* Co3O4/Mn3O4 cubic-parent geometric starting models.
+ * No dependencies, randomization, network access, surface pruning or relaxation.
+ * All internal coordinates and halfspace limits are in angstroms.
+ * Basis source: Co3O4_Fd3m_origin2.poscar, SHA256
+ * 46acdf2ecc1eeb0fdec6ac274abee3684d8e2f37cd52f175e34775f9a8efeebd.
+ */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  root.CoMnEngine = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+  const VERSION = '1.0.0';
+  const EPS = 1e-9;
+  const MAX_ATOMS = 2000000;
+  const MAX_CANDIDATES = 20000000;
+  const sourceSignature = '46acdf2ecc1eeb0fdec6ac274abee3684d8e2f37cd52f175e34775f9a8efeebd';
+  const basisName = 'Co3O4_Fd3m_origin2.poscar (56 sites, Co24 O32)';
+  const FRACTIONAL_BASIS = [
+    [.125,.125,.125],[.875,.875,.875],[.125,.625,.625],[.375,.875,.375],
+    [.375,.375,.875],[.625,.125,.625],[.875,.375,.375],[.625,.625,.125],
+    [.75,.5,.75],[.5,.25,.25],[.75,.25,0],[.5,.5,.5],
+    [0,.75,.25],[.25,.75,0],[.25,.5,.25],[.5,.75,.75],
+    [0,.5,0],[.75,.75,.5],[.75,0,.25],[.25,.25,.5],
+    [0,.25,.75],[.25,0,.75],[0,0,.5],[.5,0,0],
+    [.9890000000000001,.261,.9890000000000001],[.739,.011,.011],
+    [.9890000000000001,.489,.761],[.511,.739,.511],[.261,.261,.261],
+    [.739,.739,.739],[.239,.511,.011],[.489,.989,.761],
+    [.0109999999999999,.739,.0109999999999999],[.261,.989,.989],
+    [.739,.511,.511],[.0109999999999999,.511,.239],[.489,.261,.489],
+    [.761,.261,.761],[.511,.511,.739],[.989,.761,.489],[.011,.011,.739],
+    [.239,.011,.511],[.489,.489,.261],[.239,.739,.239],
+    [.989,.9890000000000001,.261],[.511,.239,.011],
+    [.489,.761,.9890000000000001],[.011,.239,.511],[.761,.761,.261],
+    [.239,.239,.739],[.739,.239,.239],[.261,.761,.761],[.261,.489,.489],
+    [.761,.989,.489],[.761,.489,.9890000000000001],[.511,.011,.239]
+  ];
+  const COMMON = {coreNm:11,latticeA:8.084,vacuumNm:1.2,contactFraction:1,growthFace:'+Z',registry:[.318,.318,.318]};
+  const PRESETS = {
+    shallow: Object.assign({},COMMON,{type:'shallow',shellNm:.2021,clNm:0,ratio:1/3}),
+    CL: Object.assign({},COMMON,{type:'CL',shellNm:3,clNm:3,ratio:.5}),
+    CL_I: Object.assign({},COMMON,{type:'CL_I',shellNm:5,clNm:3,ratio:105/170}),
+    noGB: Object.assign({},COMMON,{type:'noGB',shellNm:5,clNm:0,ratio:105/170})
+  };
+  const AXES = [[1,0,0],[0,1,0],[0,0,1],[-1,0,0],[0,-1,0],[0,0,-1]];
+  const OCTANTS = [];
+  for (const x of [-1,1]) for (const y of [-1,1]) for (const z of [-1,1]) OCTANTS.push([x,y,z]);
+  const SYMBOLS = {8:'O',25:'Mn',27:'Co'};
+  function preset(type) {
+    if (!PRESETS[type]) throw new Error('알 수 없는 구조 타입입니다.');
+    const p = Object.assign({},PRESETS[type]);
+    p.registry = p.registry.slice();
+    return p;
+  }
+  function boxPlanes(H,R) {
+    const normals = AXES.map(n=>n.slice()), limits = new Array(6).fill(H), labels = new Array(6).fill('parent {100}');
+    if (R !== undefined) {
+      normals.push(...OCTANTS.map(n=>n.slice())); limits.push(...new Array(8).fill(R)); labels.push(...new Array(8).fill('parent {111}'));
+    }
+    return {normals,limits,labels};
+  }
+  function faceFrame(face) {
+    const axis = {X:0,Y:1,Z:2}[face.slice(1)], sign=face[0]==='-'?-1:1;
+    const tangents = [0,1,2].filter(v=>v!==axis);
+    return {axis,sign,u:tangents[0],v:tangents[1]};
+  }
+  function localNormal(n,frame) {
+    const out=[0,0,0]; out[frame.u]=n[0]; out[frame.v]=n[1]; out[frame.axis]=frame.sign*n[2]; return out;
+  }
+  function describe(input) {
+    input = input || {};
+    const type = input.type || 'CL_I';
+    const p = Object.assign({},PRESETS[type] || PRESETS.CL_I,input,{type});
+    p.registry = Array.isArray(p.registry) ? p.registry.slice() : p.registry;
+    const errors=[],warnings=[];
+    if (!PRESETS[type]) errors.push('구조 타입은 shallow, CL, CL_I, noGB 중 하나여야 합니다.');
+    const ranges={coreNm:[1,40],shellNm:[.05,20],clNm:[0,20],ratio:[1/3,1],latticeA:[7,10],vacuumNm:[.2,10],contactFraction:[.1,1]};
+    const names={coreNm:'코어 크기',shellNm:'셸 높이',clNm:'CL 두께',ratio:'절단비 H/R',latticeA:'격자상수',vacuumNm:'진공 여유',contactFraction:'접촉 폭 비율'};
+    for (const key of Object.keys(ranges)) {
+      if (typeof p[key] !== 'number' || !Number.isFinite(p[key])) errors.push(names[key]+'는 유한한 숫자여야 합니다.');
+      else if (p[key]<ranges[key][0]-1e-12 || p[key]>ranges[key][1]+1e-12) errors.push(names[key]+' 범위는 '+ranges[key].join('–')+'입니다.');
+    }
+    if (!Array.isArray(p.registry) || p.registry.length!==3 || p.registry.some(v=>typeof v!=='number'||!Number.isFinite(v)||v<0||v>=1)) errors.push('격자 원점은 0 이상 1 미만의 세 분수 좌표여야 합니다.');
+    if (!['+X','-X','+Y','-Y','+Z','-Z'].includes(p.growthFace)) errors.push('성장 면을 +X, −X, +Y, −Y, +Z, −Z 중에서 선택하세요.');
+    if (type==='CL') {
+      if (p.clNm<.05) errors.push('CL 구조의 CL 두께는 0.05 nm 이상이어야 합니다.');
+      p.shellNm=p.clNm;
+    }
+    if (type==='shallow'||type==='noGB') p.clNm=0;
+    if (type==='shallow'&&Math.abs(p.ratio-1/3)>1e-12) errors.push('Shallow shell은 정육면체 외곽을 사용하므로 절단비는 1/3입니다.');
+    if (type==='CL_I'&&p.clNm>p.shellNm+1e-12) errors.push('CL 두께는 전체 셸 높이보다 클 수 없습니다.');
+    const q=p.coreNm*5,H=q+p.shellNm*10,Hcl=q+p.clNm*10,R=H/p.ratio,b=q*p.contactFraction;
+    const frame=faceFrame(['+X','-X','+Y','-Y','+Z','-Z'].includes(p.growthFace)?p.growthFace:'+Z');
+    let halfspaces={core:boxPlanes(q)}, bounds={min:[-H,-H,-H],max:[H,H,H]};
+    let metrics={coreEdgeNm:p.coreNm,axialShellNm:p.shellNm,clThicknessNm:p.clNm,islandAboveClNm:type==='CL_I'?p.shellNm-p.clNm:(type==='noGB'?p.shellNm:0),cutRatio:p.ratio,cutInterceptNm:R/10,requiredMinShellNm:Math.max(.05,((type==='noGB'?q+2*b:3*q)*p.ratio-q)/10)};
+    if (errors.length) return {valid:false,errors,warnings,p,parameters:p,type,q,H,Hcl,R,b,halfspaces,bounds,metrics};
+    if (type==='noGB') {
+      if(R<q+2*b-EPS) errors.push('이 절단비는 지정한 정사각형 접촉면의 꼭짓점까지 자릅니다. H/R ≤ '+(Math.floor(H/(q+2*b)*1e6)/1e6)+'로 낮추거나 섬 높이를 키우세요.');
+      const normals=[[0,0,-1],[0,0,1],[1,0,-1],[-1,0,-1],[0,1,-1],[0,-1,-1]],limits=[-q,H,b-q,b-q,b-q,b-q],labels=['Co/Mn contact','Mn (001)','Mn {112}','Mn {112}','Mn {112}','Mn {112}'];
+      for(const sx of [-1,1])for(const sy of [-1,1]) {normals.push([sx,sy,1]);limits.push(R);labels.push('Mn {011}');}
+      halfspaces.cap={normals:normals.map(n=>localNormal(n,frame)),limits,labels};
+      const peak=Math.max(q,Math.min(H,(R-b+q)/2)),half=Math.min(b+peak-q,R-peak),extent=Math.max(q,half);
+      bounds={min:[-q,-q,-q],max:[q,q,q]};
+      for(const i of [frame.u,frame.v]){bounds.min[i]=-extent;bounds.max[i]=extent;}
+      if(frame.sign>0)bounds.max[frame.axis]=H;else bounds.min[frame.axis]=-H;
+      const topSquareHalf=b+H-q,topL1=R-H;
+      Object.assign(metrics,{contactWidthNm:2*b/10,islandHeightNm:p.shellNm,maxIslandWidthNm:2*half/10,topAxisWidthNm:2*Math.max(0,Math.min(topSquareHalf,topL1))/10,growthFace:p.growthFace,peakHeightNm:(peak-q)/10,contactAreaNm2:4*b*b/100});
+      if(half>q+EPS)warnings.push('섬의 접촉면은 코어 안에 있지만, 위쪽 최대 폭은 코어보다 큽니다. {112} 아래 경사면이 벌어지는 형상입니다.');
+      if(2*(b+H-q)+H<=R+EPS)warnings.push('현재 절단비에서는 {011} 상부 경사면이 나타나지 않습니다.');
+      if(topL1<=EPS)warnings.push('현재 절단비에서 (001) 윗면은 점으로 줄어듭니다.');
+      if(p.contactFraction<.3)warnings.push('접촉 폭이 작습니다. 생성한 원자의 연결성은 별도로 확인하세요.');
+    } else {
+      if(R<3*q-EPS) errors.push('CL/셸의 모서리를 자르는 것은 허용됩니다. 현재 절단면은 코어 꼭짓점까지 약 '+((3*q-R)/Math.sqrt(3)/10).toFixed(3)+' nm 들어옵니다. H/R ≤ '+(Math.floor(H/(3*q)*1e6)/1e6)+'로 낮추거나 전체 셸 높이를 키우세요.');
+      halfspaces.outer=boxPlanes(H,R);
+      if(type==='CL_I')halfspaces.cl=boxPlanes(Hcl,R);
+      else if(type==='CL')halfspaces.cl=halfspaces.outer;
+      if(type==='CL_I'&&p.clNm===p.shellNm)warnings.push('CL 두께와 전체 셸 높이가 같아 island 영역이 없습니다.');
+      if(type==='CL_I'&&p.clNm===0)warnings.push('CL 두께가 0이므로 코어 밖은 모두 island 영역으로 표시됩니다.');
+      if(type==='shallow'&&p.shellNm>.5)warnings.push('얕은 셸 기본 두께는 0.2021 nm입니다. 현재 두께는 얕은 셸 기본 모델보다 큽니다.');
+    }
+    if(p.shellNm*10<p.latticeA/4)warnings.push('셸 두께가 a/4보다 작아 원자층이 불연속적이거나 일부 면에서 비어 있을 수 있습니다.');
+    if(p.latticeA!==8.084)warnings.push('격자상수를 변경하면 코어와 셸의 모든 결합 길이가 함께 바뀝니다.');
+    const span=Math.ceil(H/p.latticeA)+2,candidates=(2*span+1)**3*56;
+    if(candidates>MAX_CANDIDATES) errors.push('검색할 격자점이 '+candidates.toLocaleString('en-US')+'개로 한도 20,000,000개를 초과합니다. 크기를 줄여 주세요.');
+    const coreEstimate=56*(2*q)**3/p.latticeA**3;
+    if(coreEstimate>MAX_ATOMS*1.05)errors.push('코어만으로도 약 '+Math.round(coreEstimate).toLocaleString('en-US')+'개 원자가 예상되어 2,000,000개 생성 한도를 초과합니다.');
+    Object.assign(metrics,{outerSpansNm:bounds.min.map((v,i)=>(bounds.max[i]-v)/10),span,candidateCount:candidates,coreAtomEstimate:Math.round(coreEstimate)});
+    return {valid:errors.length===0,errors,warnings,p,parameters:p,type,q,H,Hcl,R,b,frame,halfspaces,bounds,metrics};
+  }
+  function generate(input,onProgress) {
+    const d=describe(input);
+    if(!d.valid)throw new Error(d.errors.join('\n'));
+    const {q,H,Hcl,R,b,type,frame}=d,p=d.parameters,span=d.metrics.span;
+    const counts={total:0,Co:0,Mn:0,O:0,core:0,CL:0,island:0};
+    const a=p.latticeA,reg=p.registry,points=FRACTIONAL_BASIS;
+    let positions,elements,regions,cursor,actualMin=[Infinity,Infinity,Infinity],actualMax=[-Infinity,-Infinity,-Infinity];
+    const steps=2*span+1;
+    for(let pass=0;pass<2;pass++) {
+      if(pass===1) {
+        positions=new Float64Array(counts.total*3);elements=new Uint8Array(counts.total);regions=new Uint8Array(counts.total);
+        cursor={27:0,25:counts.Co,8:counts.Co+counts.Mn};
+      }
+      for(let ix=-span;ix<=span;ix++) {
+        if(onProgress)onProgress({stage:pass?'placing':'counting',done:ix+span,total:steps,fraction:(pass+(ix+span)/steps)/2});
+        for(let iy=-span;iy<=span;iy++)for(let iz=-span;iz<=span;iz++)for(let k=0;k<56;k++) {
+          const f=points[k],x=(ix+f[0]-reg[0])*a,y=(iy+f[1]-reg[1])*a,z=(iz+f[2]-reg[2])*a;
+          const ax=Math.abs(x),ay=Math.abs(y),az=Math.abs(z),m=Math.max(ax,ay,az),s=ax+ay+az;
+          const inCore=m<=q+EPS;
+          let region;
+          if(inCore)region=1;
+          else if(type==='noGB') {
+            const v=[x,y,z],h=frame.sign*v[frame.axis],u=Math.abs(v[frame.u]),w=Math.abs(v[frame.v]);
+            if(h<=q+EPS||h>H+EPS||Math.max(u,w)>b+h-q+EPS||u+w+h>R+EPS)continue;
+            region=3;
+          } else {
+            if(m>H+EPS||s>R+EPS)continue;
+            region=type==='CL_I'&&m>Hcl+EPS?3:2;
+          }
+          const element=k<24?(inCore?27:25):8;
+          if(pass===0) {
+            counts.total++;counts[SYMBOLS[element]]++;counts[region===1?'core':region===2?'CL':'island']++;
+            if(counts.total>MAX_ATOMS)throw new Error('원자가 2,000,000개를 초과합니다. 코어 또는 셸 크기를 줄여 주세요.');
+          }else {
+            const j=cursor[element]++,j3=3*j;
+            positions[j3]=x;positions[j3+1]=y;positions[j3+2]=z;elements[j]=element;regions[j]=region;
+            if(x<actualMin[0])actualMin[0]=x;if(x>actualMax[0])actualMax[0]=x;
+            if(y<actualMin[1])actualMin[1]=y;if(y>actualMax[1])actualMax[1]=y;
+            if(z<actualMin[2])actualMin[2]=z;if(z>actualMax[2])actualMax[2]=z;
+          }
+        }
+      }
+      if(pass===0&&counts.core===0)throw new Error('코어 원자가 없습니다. 크기 및 격자 원점을 확인하세요.');
+    }
+    const warnings=d.warnings.slice();
+    if(counts.Mn===0)warnings.push('생성된 Mn 원자가 없습니다. 셸 두께와 격자 원점을 확인하세요.');
+    const vacuum=p.vacuumNm*10,origin=d.bounds.min.map(v=>vacuum-v),cell=d.bounds.min.map((v,i)=>d.bounds.max[i]-v+2*vacuum);
+    if(onProgress)onProgress({stage:'complete',done:counts.total,total:counts.total,fraction:1});
+    return {positions,elements,regions,counts,actualBounds:{min:actualMin,max:actualMax},bounds:d.bounds,cell,origin,parameters:p,derived:d,warnings};
+  }
+  function* textChunks(result,input,options) {
+    options=Object.assign({extended:true,chunkSize:4096},options||{});
+    const p=result.parameters,n=result.counts.total,cell=result.cell,origin=result.origin;
+    if(!Number.isInteger(options.chunkSize)||options.chunkSize<1)throw new Error('chunkSize must be a positive integer.');
+    if(options.extended) {
+      const lattice=[cell[0],0,0,0,cell[1],0,0,0,cell[2]].map(v=>v.toFixed(10)).join(' ');
+      yield n+'\nLattice="'+lattice+'" Properties=species:S:1:pos:R:3:region:I:1 pbc="F F F" model="CoMn_'+p.type+'" region_map="1:core,2:shallow_or_CL,3:island" units=angstrom state=unrelaxed_cubic_parent engine_version='+VERSION+'\n';
+    }else yield n+'\nCoMn '+p.type+'; angstrom; unrelaxed cubic-parent; core='+p.coreNm+' nm; shell='+p.shellNm+' nm; CL='+p.clNm+' nm; H/R='+p.ratio+'\n';
+    let lines=[];
+    for(let i=0;i<n;i++) {
+      const j=3*i;
+      let line=SYMBOLS[result.elements[i]]+' '+(result.positions[j]+origin[0]).toFixed(10)+' '+(result.positions[j+1]+origin[1]).toFixed(10)+' '+(result.positions[j+2]+origin[2]).toFixed(10);
+      if(options.extended)line+=' '+result.regions[i];
+      lines.push(line+'\n');
+      if(lines.length===options.chunkSize){yield lines.join('');lines=[];}
+    }
+    if(lines.length)yield lines.join('');
+  }
+  function encodeXYZ(result,input,options){return Array.from(textChunks(result,input,options)).join('');}
+  function exportParameters(input){const d=describe(input);if(!d.valid)throw new Error(d.errors.join('\n'));return JSON.stringify({format:'CoMnBuilderParameters',version:VERSION,parameters:d.parameters},null,2);}
+  function importParameters(text){
+    const data=typeof text==='string'?JSON.parse(text):text;
+    if(!data||typeof data!=='object'||Array.isArray(data))throw new Error('설정 파일에는 매개변수 객체가 있어야 합니다.');
+    if(data.format&&data.format!=='CoMnBuilderParameters')throw new Error('CoMn Builder 설정 파일이 아닙니다.');
+    const values=data.parameters||data;
+    if(!values||typeof values!=='object'||Array.isArray(values)||!PRESETS[values.type])throw new Error('설정 파일에 올바른 구조 타입이 없습니다.');
+    const d=describe(values);if(!d.valid)throw new Error(d.errors.join('\n'));return d.parameters;
+  }
+  return {VERSION,MAX_ATOMS,MAX_CANDIDATES,sourceSignature,basisName,PRESETS,FRACTIONAL_BASIS,preset,describe,generate,textChunks,encodeXYZ,exportParameters,importParameters};
+});
+</script>
+<script>/* CoMn scientific viewer. Coordinates are in angstroms; displayed lengths are nm.
+ * No network, framework or external library is required. WebGL atom rendering
+ * uses actual coordinates; Canvas2D remains available as an explicit fallback. */
+(function (root, factory) {
+  const api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.CoMnView = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  const COLORS = { core: '#477bbf', cl: '#dd9869', island: '#79a966', oxygen: '#a7b2be' };
+  const EPS = 1e-7;
+  const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+  const sub = (a, b) => a.map((v, i) => v - b[i]);
+  const cross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const norm = a => Math.sqrt(dot(a, a));
+  const unit = a => { const d = norm(a) || 1; return a.map(v => v / d); };
+  const mean = points => points.reduce((s, p) => s.map((v, i) => v + p[i] / points.length), [0, 0, 0]);
+  const planeData = h => h && Array.isArray(h.normals) && Array.isArray(h.limits) ? h.normals.map((n, i) => ({ n, d: h.limits[i], label: h.labels && h.labels[i] })).filter(p => Array.isArray(p.n) && p.n.length === 3 && p.n.every(Number.isFinite) && Number.isFinite(p.d) && norm(p.n) > EPS) : [];
+  const latticeA = p => Number.isFinite(p.latticeA) && p.latticeA > 0 ? p.latticeA : 8.084;
+
+  function orderFace(points, normal) {
+    const c = mean(points), n = unit(normal);
+    const u = unit(cross(Math.abs(n[2]) < 0.85 ? [0, 0, 1] : [0, 1, 0], n));
+    const v = cross(n, u);
+    return points.slice().sort((a, b) => Math.atan2(dot(sub(a, c), v), dot(sub(a, c), u)) - Math.atan2(dot(sub(b, c), v), dot(sub(b, c), u)));
+  }
+
+  function polyhedron(halfspaces) {
+    const planes = planeData(halfspaces), vertices = [];
+    for (let i = 0; i < planes.length; i++) for (let j = i + 1; j < planes.length; j++) for (let k = j + 1; k < planes.length; k++) {
+      const a = planes[i], b = planes[j], c = planes[k];
+      const bc = cross(b.n, c.n), ca = cross(c.n, a.n), ab = cross(a.n, b.n), det = dot(a.n, bc);
+      if (Math.abs(det) < 1e-10) continue;
+      const p = [0, 1, 2].map(t => (a.d * bc[t] + b.d * ca[t] + c.d * ab[t]) / det);
+      if (!planes.every(h => dot(h.n, p) <= h.d + EPS * Math.max(1, norm(h.n)))) continue;
+      if (!vertices.some(q => norm(sub(p, q)) < 1e-5)) vertices.push(p);
+    }
+    const faces = [];
+    for (const plane of planes) {
+      const points = vertices.filter(p => Math.abs(dot(plane.n, p) - plane.d) <= EPS * 10 * Math.max(1, norm(plane.n)));
+      if (points.length >= 3) faces.push({ points: orderFace(points, plane.n), normal: unit(plane.n), label: plane.label });
+    }
+    return { vertices, faces, planes };
+  }
+
+  function clipPolygon(points, normal, limit, keepInside) {
+    if (!points.length) return [];
+    const out = [];
+    for (let i = 0; i < points.length; i++) {
+      const a = points[i], b = points[(i + 1) % points.length];
+      const da = dot(normal, a) - limit, db = dot(normal, b) - limit;
+      const ia = keepInside ? da <= EPS : da >= -EPS;
+      const ib = keepInside ? db <= EPS : db >= -EPS;
+      if (ia) out.push(a);
+      if (ia !== ib) {
+        const t = da / (da - db);
+        out.push(a.map((v, j) => v + t * (b[j] - v)));
+      }
+    }
+    return out.filter((p, i) => !i || norm(sub(p, out[i - 1])) > 1e-7);
+  }
+
+  function polygonArea(points) {
+    if (points.length < 3) return 0;
+    const origin = points[0];
+    let area = 0;
+    for (let i = 1; i + 1 < points.length; i++) area += norm(cross(sub(points[i], origin), sub(points[i + 1], origin))) / 2;
+    return area;
+  }
+
+  // Convex subtraction partitions the polygon into non-overlapping outside pieces.
+  function splitPolygon(points, halfspaces) {
+    let inside = points;
+    const outside = [];
+    for (const plane of planeData(halfspaces)) {
+      if (inside.length < 3) break;
+      // A face coincident with a clipping plane belongs to the inside region.
+      if (inside.every(p => dot(plane.n, p) <= plane.d + EPS)) continue;
+      const piece = clipPolygon(inside, plane.n, plane.d, false);
+      if (polygonArea(piece) > 1e-7) outside.push(piece);
+      inside = clipPolygon(inside, plane.n, plane.d, true);
+    }
+    return { inside: polygonArea(inside) > 1e-7 ? inside : [], outside };
+  }
+
+  function sectionPolygon(mesh, axis) {
+    const normal = Array.isArray(axis) ? unit(axis) : [0, 1, 2].map(i => i === axis ? 1 : 0);
+    const points = [], add = p => { if (!points.some(q => norm(sub(p, q)) < 1e-6)) points.push(p); };
+    for (const face of mesh.faces) for (let i = 0; i < face.points.length; i++) {
+      const a = face.points[i], b = face.points[(i + 1) % face.points.length];
+      const da = dot(a, normal), db = dot(b, normal);
+      if (Math.abs(da) < EPS) add(a);
+      if (da * db < 0) {
+        const t = -da / (db - da);
+        add(a.map((v, j) => v + t * (b[j] - v)));
+      }
+    }
+    return points.length >= 3 ? orderFace(points, normal) : [];
+  }
+
+  function shade(hex, strength) {
+    const rgb = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+    return 'rgb(' + rgb.map(v => Math.round(Math.min(255, Math.max(0, v * strength)))).join(',') + ')';
+  }
+
+  class CoMnView {
+    constructor(canvas, callbacks) {
+      if (!canvas || typeof canvas.getContext !== 'function') throw new Error('CoMnView requires a canvas.');
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.callbacks = callbacks || {};
+      this.options = { showCore: true, showOxygen: false, atomScale: 1, cutaway: false };
+      this.mode = 'geometry'; this.view = 'iso'; this.sectionAxis = 'X';
+      this.yaw = -Math.PI / 4; this.pitch = Math.PI / 6; this.zoom = 1;
+      this.description = null; this.atoms = null; this.meshes = {}; this.points = [];
+      this.sliceTotal = 0; this.pendingFrame = null;
+      this.width = 600; this.height = 420;
+      this.pan = [0, 0]; this.gpu = null; this.gpuTried = false; this.gpuCanvas = null;
+      this.atomRevision = 0; this.atomSelection = null; this.spriteCache = {};
+      this.canvas.comnView = this;
+      this.originalCanvasPosition = this.canvas.style.position;
+      this.originalCanvasZIndex = this.canvas.style.zIndex;
+      this.drag = null;
+      this.canvas.style.touchAction = 'none'; this.canvas.style.cursor = 'grab';
+      this._listeners = [];
+      this._bind('pointerdown', event => {
+        if (![0, 2].includes(event.button) && event.pointerType !== 'touch') return;
+        this.drag = { x: event.clientX, y: event.clientY, yaw: this.yaw, pitch: this.pitch, pan: this.pan.slice(), panning: this.mode === 'corner' || event.shiftKey || event.button === 2 };
+        if (this.canvas.setPointerCapture) this.canvas.setPointerCapture(event.pointerId);
+        this.canvas.style.cursor = 'grabbing';
+      });
+      this._bind('pointermove', event => {
+        if (!this.drag) return;
+        if (this.drag.panning) {
+          this.pan = [this.drag.pan[0] + event.clientX - this.drag.x, this.drag.pan[1] + event.clientY - this.drag.y];
+          this._schedule(); return;
+        }
+        this.yaw = this.drag.yaw - (event.clientX - this.drag.x) * 0.009;
+        this.pitch = Math.max(-Math.PI / 2 + 0.001, Math.min(Math.PI / 2 - 0.001, this.drag.pitch + (event.clientY - this.drag.y) * 0.009));
+        this.view = 'custom'; this._schedule(); this._notify();
+      });
+      const endDrag = () => { this.drag = null; this.canvas.style.cursor = 'grab'; };
+      this._bind('pointerup', endDrag); this._bind('pointercancel', endDrag); this._bind('lostpointercapture', endDrag);
+      this._bind('contextmenu', event => event.preventDefault());
+      this._bind('wheel', event => { event.preventDefault(); this.zoom = Math.max(0.35, Math.min(this.mode === 'atoms' ? 25 : 5, this.zoom * Math.exp(-event.deltaY * 0.001))); this._schedule(); }, { passive: false });
+      this._bind('dblclick', () => this.resetView());
+      if (typeof ResizeObserver !== 'undefined') { this.observer = new ResizeObserver(() => this.resize()); this.observer.observe(canvas); }
+      this.resize();
+    }
+
+    _bind(name, handler, options) { this.canvas.addEventListener(name, handler, options); this._listeners.push([name, handler, options]); }
+    _notify() { if (typeof this.callbacks.onViewChange === 'function') this.callbacks.onViewChange(this.getInfo()); }
+    _schedule() {
+      if (this.pendingFrame !== null) return;
+      const frame = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : callback => setTimeout(callback, 0);
+      this.pendingFrame = frame(() => { this.pendingFrame = null; this.render(); });
+    }
+
+    setModel(description) {
+      this.description = description || null;
+      this.atoms = null; this.points = []; this.sliceTotal = 0; this.meshes = {};
+      this._clearAtomBuffers();
+      if (description && description.halfspaces) for (const key of ['core', 'outer', 'cl', 'cap']) {
+        if (description.halfspaces[key]) this.meshes[key] = polyhedron(description.halfspaces[key]);
+      }
+      this._schedule(); this._notify();
+      return this;
+    }
+
+    setAtoms(result) { this._clearAtomBuffers(); this.atoms = result || null; this._cacheSection(); this._schedule(); this._notify(); return this; }
+    setMode(mode) {
+      this.mode = ['section', 'atoms', 'corner'].includes(mode) ? mode : 'geometry';
+      if (this.mode === 'atoms') this._initGPU(); else this.zoom = Math.min(5, this.zoom);
+      this._cacheSection(); this._schedule(); this._notify(); return this;
+    }
+    setOptions(options) {
+      Object.assign(this.options, options || {});
+      this.options.atomScale = Number.isFinite(Number(this.options.atomScale)) ? Math.max(0.4, Math.min(2, Number(this.options.atomScale))) : 1;
+      this.options.cutaway = !!this.options.cutaway;
+      this._cacheSection(); this._schedule(); this._notify(); return this;
+    }
+    setView(view) {
+      if (this.mode === 'corner') return this;
+      const v = String(view || 'iso');
+      this.view = ['X', 'Y', 'Z'].includes(v.toUpperCase()) ? v.toUpperCase() : 'iso';
+      if (this.view === 'X') { this.yaw = 0; this.pitch = 0; this.sectionAxis = 'X'; }
+      else if (this.view === 'Y') { this.yaw = Math.PI / 2; this.pitch = 0; this.sectionAxis = 'Y'; }
+      else if (this.view === 'Z') { this.yaw = -Math.PI / 2; this.pitch = Math.PI / 2; this.sectionAxis = 'Z'; }
+      else { this.yaw = -Math.PI / 4; this.pitch = Math.PI / 6; this.sectionAxis = 'X'; }
+      this._cacheSection(); this._schedule(); this._notify(); return this;
+    }
+    resetView() { this.zoom = 1; this.pan = [0, 0]; this.setView('iso'); return this; }
+
+    resize() {
+      const rect = this.canvas.getBoundingClientRect();
+      this.width = Math.max(100, rect.width || this.canvas.clientWidth || 600);
+      this.height = Math.max(100, rect.height || this.canvas.clientHeight || 420);
+      this.dpr = Math.min(3, typeof devicePixelRatio === 'number' ? devicePixelRatio : 1);
+      const width = Math.round(this.width * this.dpr), height = Math.round(this.height * this.dpr);
+      if (this.canvas.width !== width) this.canvas.width = width;
+      if (this.canvas.height !== height) this.canvas.height = height;
+      if (this.gpuCanvas) {
+        if (this.gpuCanvas.width !== width) this.gpuCanvas.width = width;
+        if (this.gpuCanvas.height !== height) this.gpuCanvas.height = height;
+      }
+      // Resizing the backing store clears it immediately. Draw in this same
+      // ResizeObserver callback so an offscreen/throttled RAF cannot leave a
+      // blank canvas during responsive reflow or a full-page capture.
+      this.render(); return this;
+    }
+
+    getInfo() {
+      const p = this.description && (this.description.parameters || this.description.p) || {};
+      const selection = this.mode === 'atoms' ? this._atomSelection() : null;
+      const eligible = selection ? selection.eligible : this.mode === 'section' ? this.sliceTotal : 0;
+      const shown = selection ? selection.shown : this.mode === 'section' ? this.points.length : 0;
+      return { mode: this.mode, view: this.mode === 'corner' ? 'corner' : this.view, sectionAxis: this.sectionAxis, sliceThicknessNm: latticeA(p) / 20,
+        shownAtoms: shown, eligibleAtoms: eligible, totalAtoms: this.atoms && this.atoms.elements ? this.atoms.elements.length : 0,
+        totalSliceAtoms: this.sliceTotal, sampled: eligible > shown,
+        renderer: this.mode === 'atoms' && this.gpu ? 'WebGL' : 'Canvas2D', atomScale: this.options.atomScale, cutaway: this.options.cutaway,
+        cutawayPlane: 'camera-facing half through core center removed',
+        hasAtoms: !!this.atoms, analyticPreview: this.mode === 'corner' || !this.atoms, zoom: this.zoom,
+        projection: 'orthographic', sectionPlane: this.mode === 'corner' ? 'diagonal through core corners' : null, colors: Object.assign({}, COLORS) };
+    }
+
+    _clearAtomBuffers() {
+      this.atomRevision++; this.atomSelection = null;
+      if (this.gpu && this.gpu.buffer) { this.gpu.gl.deleteBuffer(this.gpu.buffer); this.gpu.buffer = null; this.gpu.revision = -1; }
+    }
+
+    _initGPU() {
+      if (this.gpu || this.gpuTried) return;
+      this.gpuTried = true;
+      const doc = this.canvas.ownerDocument || (typeof document !== 'undefined' ? document : null);
+      if (!doc || !this.canvas.parentNode) return;
+      const canvas = doc.createElement('canvas');
+      canvas.id = (this.canvas.id || 'comn-preview') + '-atoms';
+      canvas.setAttribute('data-comn-atom-canvas', ''); canvas.setAttribute('aria-hidden', 'true');
+      Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', pointerEvents: 'none', zIndex: '0', display: 'none' });
+      const contextOptions = { alpha: false, antialias: true, depth: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' };
+      let gl, program;
+      try {
+        gl = canvas.getContext('webgl2', contextOptions);
+        const gl2 = !!gl;
+        if (!gl) gl = canvas.getContext('webgl', contextOptions);
+        if (!gl) return;
+        const depthExtension = !gl2 && gl.getExtension('EXT_frag_depth');
+        const prefix = gl2 ? '#version 300 es\n' : '';
+        const input = gl2 ? 'in' : 'attribute', vout = gl2 ? 'out' : 'varying', vin = gl2 ? 'in' : 'varying';
+        const vertexSource = prefix + `precision highp float;
+          ${input} vec3 aPosition;
+          ${input} float aRegion;
+          ${input} float aElement;
+          uniform vec3 uCenter, uRight, uUp, uForward;
+          uniform vec2 uViewport, uOffset;
+          uniform float uScale, uDpr, uDepthRange, uAtomScale, uMaxPoint;
+          uniform float uShowCore, uShowOxygen, uCutaway;
+          ${vout} vec3 vColor;
+          ${vout} float vRadius, vVisible;
+          void main() {
+            bool oxygen = aElement < 10.0;
+            bool core = aRegion < 1.5;
+            vVisible = 1.0;
+            if ((oxygen && uShowOxygen < 0.5) || (core && uShowCore < 0.5) || (uCutaway > 0.5 && dot(aPosition, uForward) > 0.0000001)) vVisible = 0.0;
+            vColor = oxygen ? vec3(0.654902, 0.698039, 0.745098) : core ? vec3(0.278431, 0.482353, 0.749020) : aRegion > 2.5 ? vec3(0.474510, 0.662745, 0.400000) : vec3(0.866667, 0.596078, 0.411765);
+            vRadius = (oxygen ? 0.58 : 0.75) * uAtomScale;
+            vec3 p = aPosition - uCenter;
+            vec2 pixel = uOffset + vec2(dot(p, uRight), -dot(p, uUp)) * uScale;
+            gl_Position = vec4(pixel.x / uViewport.x * 2.0 - 1.0, 1.0 - pixel.y / uViewport.y * 2.0, -dot(p, uForward) / uDepthRange, 1.0);
+            gl_PointSize = min(uMaxPoint, max(1.0, vRadius * 2.0 * uScale * uDpr));
+            if (vVisible < 0.5) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); gl_PointSize = 1.0; }
+          }`;
+        const depthWrite = gl2 ? 'gl_FragDepth' : depthExtension ? 'gl_FragDepthEXT' : null;
+        const fragmentSource = prefix + (!gl2 && depthExtension ? '#extension GL_EXT_frag_depth : enable\n' : '') + `precision highp float;
+          ${vin} vec3 vColor;
+          ${vin} float vRadius, vVisible;
+          uniform float uDepthRange;
+          ${gl2 ? 'out vec4 outputColor;' : ''}
+          void main() {
+            vec2 xy = gl_PointCoord * 2.0 - 1.0; xy.y = -xy.y;
+            float r2 = dot(xy, xy);
+            if (r2 > 1.0 || vVisible < 0.5) discard;
+            vec3 n = vec3(xy, sqrt(max(0.0, 1.0 - r2)));
+            vec3 light = normalize(vec3(-0.45, 0.6, 0.85));
+            float diffuse = max(0.0, dot(n, light));
+            float specular = pow(max(0.0, dot(n, normalize(light + vec3(0.0, 0.0, 1.0)))), 26.0) * 0.21;
+            vec3 color = vColor * (0.32 + 0.68 * diffuse) + vec3(specular);
+            ${gl2 ? 'outputColor' : 'gl_FragColor'} = vec4(color, 1.0);
+            ${depthWrite ? depthWrite + ' = gl_FragCoord.z - n.z * vRadius / (2.0 * uDepthRange);' : ''}
+          }`;
+        const compile = (type, source) => {
+          const shader = gl.createShader(type); gl.shaderSource(shader, source); gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) { gl.deleteShader(shader); throw new Error('Atom shader unavailable'); }
+          return shader;
+        };
+        const vertex = compile(gl.VERTEX_SHADER, vertexSource), fragment = compile(gl.FRAGMENT_SHADER, fragmentSource);
+        program = gl.createProgram(); gl.attachShader(program, vertex); gl.attachShader(program, fragment); gl.linkProgram(program);
+        gl.deleteShader(vertex); gl.deleteShader(fragment);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error('Atom program unavailable');
+        const uniforms = {};
+        for (const name of ['Center', 'Right', 'Up', 'Forward', 'Viewport', 'Offset', 'Scale', 'Dpr', 'DepthRange', 'AtomScale', 'MaxPoint', 'ShowCore', 'ShowOxygen', 'Cutaway']) uniforms[name] = gl.getUniformLocation(program, 'u' + name);
+        this.gpu = { gl, program, uniforms, buffer: null, revision: -1, maxPoint: gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)[1], attributes: ['aPosition', 'aRegion', 'aElement'].map(name => gl.getAttribLocation(program, name)) };
+        this.gpuCanvas = canvas; canvas.width = this.canvas.width; canvas.height = this.canvas.height;
+        this.canvas.parentNode.insertBefore(canvas, this.canvas);
+        this.canvas.style.position = 'relative'; this.canvas.style.zIndex = '1';
+        canvas.addEventListener('webglcontextlost', event => {
+          event.preventDefault(); this.gpu = null; this.atomSelection = null; canvas.style.display = 'none'; this._schedule(); this._notify();
+        });
+        canvas.addEventListener('webglcontextrestored', () => {
+          canvas.remove(); this.gpuCanvas = null; this.gpuTried = false; this._initGPU(); this.atomSelection = null; this._schedule(); this._notify();
+        });
+      } catch (_) {
+        if (gl && program) gl.deleteProgram(program);
+        this.gpu = null; canvas.remove();
+      }
+    }
+
+    _atomSelection() {
+      const result = this.atoms, valid = this.description && this.description.valid !== false;
+      if (!result || !result.positions || !result.elements || !valid) return { eligible: 0, shown: 0, indices: [] };
+      const cp = Math.cos(this.pitch), forward = [cp * Math.cos(this.yaw), cp * Math.sin(this.yaw), Math.sin(this.pitch)];
+      const key = [this.atomRevision, !!this.gpu, this.options.showCore, this.options.showOxygen, this.options.cutaway, this.options.cutaway ? this.yaw : 0, this.options.cutaway ? this.pitch : 0].join('|');
+      if (this.atomSelection && this.atomSelection.key === key) return this.atomSelection;
+      const { positions, elements, regions } = result;
+      let eligible = 0;
+      const included = i => {
+        if (!this.options.showOxygen && elements[i] === 8) return false;
+        const region = regions ? regions[i] : elements[i] === 27 ? 1 : 2;
+        if (!this.options.showCore && region === 1) return false;
+        return !this.options.cutaway || positions[3 * i] * forward[0] + positions[3 * i + 1] * forward[1] + positions[3 * i + 2] * forward[2] <= EPS;
+      };
+      for (let i = 0; i < elements.length; i++) if (included(i)) eligible++;
+      const indices = [], limit = 35000;
+      if (!this.gpu) {
+        const step = Math.max(1, Math.ceil(eligible / limit)); let ordinal = 0;
+        for (let i = 0; i < elements.length; i++) if (included(i)) { if (ordinal % step === 0) indices.push(i); ordinal++; }
+      }
+      this.atomSelection = { key, eligible, shown: this.gpu ? eligible : indices.length, indices };
+      return this.atomSelection;
+    }
+
+    _renderGPU() {
+      if (!this.gpu || !this.gpuCanvas) return;
+      const g = this.gpu, gl = g.gl, result = this.atoms;
+      gl.viewport(0, 0, this.gpuCanvas.width, this.gpuCanvas.height);
+      gl.disable(gl.SCISSOR_TEST); gl.clearColor(1, 1, 1, 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      if (!result || !this.description || this.description.valid === false) return;
+      if (!g.buffer || g.revision !== this.atomRevision) {
+        const data = new Float32Array(result.elements.length * 5);
+        for (let i = 0; i < result.elements.length; i++) {
+          data[i * 5] = result.positions[i * 3]; data[i * 5 + 1] = result.positions[i * 3 + 1]; data[i * 5 + 2] = result.positions[i * 3 + 2];
+          data[i * 5 + 3] = result.regions ? result.regions[i] : result.elements[i] === 27 ? 1 : 2; data[i * 5 + 4] = result.elements[i];
+        }
+        g.buffer = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, g.buffer); gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW); g.revision = this.atomRevision;
+      }
+      gl.useProgram(g.program); gl.bindBuffer(gl.ARRAY_BUFFER, g.buffer);
+      for (let i = 0; i < 3; i++) { gl.enableVertexAttribArray(g.attributes[i]); gl.vertexAttribPointer(g.attributes[i], i === 0 ? 3 : 1, gl.FLOAT, false, 20, i === 0 ? 0 : (i + 2) * 4); }
+      const u = g.uniforms;
+      gl.uniform3fv(u.Center, this.center); gl.uniform3fv(u.Right, this.right); gl.uniform3fv(u.Up, this.up); gl.uniform3fv(u.Forward, this.forward);
+      gl.uniform2f(u.Viewport, this.width, this.height); gl.uniform2f(u.Offset, this.cx, this.cy);
+      let depthRange = 1000;
+      if (this.description.bounds) depthRange = Math.max(10, norm(sub(this.description.bounds.max, this.description.bounds.min)) + 10);
+      for (const [name, value] of Object.entries({ Scale: this.scale, Dpr: this.dpr, DepthRange: depthRange, AtomScale: this.options.atomScale, MaxPoint: g.maxPoint, ShowCore: this.options.showCore ? 1 : 0, ShowOxygen: this.options.showOxygen ? 1 : 0, Cutaway: this.options.cutaway ? 1 : 0 })) gl.uniform1f(u[name], value);
+      gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LEQUAL); gl.disable(gl.BLEND);
+      gl.enable(gl.SCISSOR_TEST);
+      gl.scissor(0, Math.max(0, Math.floor((this.height - this.plotBottom) * this.dpr)), this.gpuCanvas.width, Math.max(1, Math.floor((this.plotBottom - this.plotTop) * this.dpr)));
+      gl.drawArrays(gl.POINTS, 0, result.elements.length); gl.disable(gl.SCISSOR_TEST);
+    }
+
+    _atomSprite(color) {
+      if (this.spriteCache[color]) return this.spriteCache[color];
+      const doc = this.canvas.ownerDocument || (typeof document !== 'undefined' ? document : null);
+      if (!doc) return null;
+      const c = doc.createElement('canvas'); c.width = c.height = 48;
+      const ctx = c.getContext('2d'), gradient = ctx.createRadialGradient(17, 14, 1, 24, 24, 23);
+      gradient.addColorStop(0, '#f2f5f8'); gradient.addColorStop(0.18, color); gradient.addColorStop(0.72, shade(color, 0.82)); gradient.addColorStop(1, shade(color, 0.38));
+      ctx.fillStyle = gradient; ctx.beginPath(); ctx.arc(24, 24, 23, 0, Math.PI * 2); ctx.fill();
+      this.spriteCache[color] = c; return c;
+    }
+
+    _atoms2D() {
+      if (!this.atoms || !this.description || this.description.valid === false) return;
+      const result = this.atoms, selection = this._atomSelection(), points = [];
+      for (const i of selection.indices) {
+        const q = this._project([result.positions[i * 3], result.positions[i * 3 + 1], result.positions[i * 3 + 2]]);
+        const oxygen = result.elements[i] === 8, region = result.regions ? result.regions[i] : result.elements[i] === 27 ? 1 : 2;
+        const r = (oxygen ? 0.58 : 0.75) * this.options.atomScale * this.scale;
+        if (q[0] < -r || q[0] > this.width + r || q[1] < this.plotTop - r || q[1] > this.plotBottom + r) continue;
+        points.push({ q, r: Math.max(0.5, r), color: oxygen ? COLORS.oxygen : region === 1 ? COLORS.core : region === 3 ? COLORS.island : COLORS.cl });
+      }
+      points.sort((a, b) => a.q[2] - b.q[2]);
+      for (const p of points) {
+        const sprite = this._atomSprite(p.color);
+        if (sprite) this.ctx.drawImage(sprite, p.q[0] - p.r, p.q[1] - p.r, p.r * 2, p.r * 2);
+        else { this.ctx.fillStyle = p.color; this.ctx.beginPath(); this.ctx.arc(p.q[0], p.q[1], p.r, 0, Math.PI * 2); this.ctx.fill(); }
+      }
+    }
+
+    _cacheSection() {
+      this.points = []; this.sliceTotal = 0;
+      const result = this.atoms;
+      if (!result || !result.positions || !result.elements) return;
+      const p = this.description && (this.description.parameters || this.description.p) || {}, half = latticeA(p) / 4;
+      const axis = { X: 0, Y: 1, Z: 2 }[this.sectionAxis], selected = [];
+      for (let i = 0; i < result.elements.length; i++) {
+        if (Math.abs(result.positions[i * 3 + axis]) > half + EPS) continue;
+        if (!this.options.showOxygen && result.elements[i] === 8) continue;
+        if (!this.options.showCore && result.regions && result.regions[i] === 1) continue;
+        selected.push(i);
+      }
+      this.sliceTotal = selected.length;
+      const limit = 30000, step = Math.max(1, Math.ceil(selected.length / limit));
+      for (let s = 0; s < selected.length; s += step) {
+        const i = selected[s], region = result.regions ? result.regions[i] : result.elements[i] === 27 ? 1 : 2;
+        this.points.push({ p: [result.positions[i * 3], result.positions[i * 3 + 1], result.positions[i * 3 + 2]],
+          color: result.elements[i] === 8 ? COLORS.oxygen : region === 1 ? COLORS.core : region === 3 ? COLORS.island : COLORS.cl, oxygen: result.elements[i] === 8 });
+      }
+    }
+
+    _setupProjection() {
+      const cp = Math.cos(this.pitch), sp = Math.sin(this.pitch), cy = Math.cos(this.yaw), sy = Math.sin(this.yaw);
+      this.forward = [cp * cy, cp * sy, sp]; this.right = [-sy, cy, 0]; this.up = [-sp * cy, -sp * sy, cp];
+      if (this.mode === 'corner') {
+        this.right = unit([1, 1, 0]); this.up = [0, 0, 1];
+        const d = this.description;
+        if (d && d.type === 'noGB' && d.frame) {
+          this.right = [0, 0, 0]; this.right[d.frame.u] = Math.SQRT1_2; this.right[d.frame.v] = Math.SQRT1_2;
+          this.up = [0, 0, 0]; this.up[d.frame.axis] = d.frame.sign;
+        }
+        this.forward = unit(cross(this.right, this.up));
+      }
+      let bounds = this.description && this.description.bounds;
+      if (!bounds || !Array.isArray(bounds.min) || !Array.isArray(bounds.max) || bounds.min.length !== 3 || bounds.max.length !== 3 || !bounds.min.concat(bounds.max).every(Number.isFinite) || bounds.min.some((v, i) => v > bounds.max[i])) bounds = { min: [-55, -55, -55], max: [55, 55, 55] };
+      this.center = bounds.min.map((v, i) => (v + bounds.max[i]) / 2);
+      const corners = [];
+      for (const x of [bounds.min[0], bounds.max[0]]) for (const y of [bounds.min[1], bounds.max[1]]) for (const z of [bounds.min[2], bounds.max[2]]) corners.push(sub([x, y, z], this.center));
+      const xs = corners.map(p => dot(p, this.right)), ys = corners.map(p => dot(p, this.up));
+      const sx = Math.max(...xs) - Math.min(...xs), syy = Math.max(...ys) - Math.min(...ys);
+      this.plotTop = 78; this.plotBottom = Math.max(this.plotTop + 1, this.height - 62);
+      this.scale = Math.min((this.width - 64) / Math.max(sx, 1), (this.plotBottom - this.plotTop) / Math.max(syy, 1)) * 0.9 * this.zoom;
+      this.cx = this.width / 2 + this.pan[0]; this.cy = (this.plotTop + this.plotBottom) / 2 + this.pan[1];
+    }
+
+    _project(p) { const v = sub(p, this.center); return [this.cx + dot(v, this.right) * this.scale, this.cy - dot(v, this.up) * this.scale, dot(v, this.forward)]; }
+    _path(points) {
+      if (!points.length) return;
+      this.ctx.beginPath();
+      points.forEach((p, i) => { const q = this._project(p); if (i) this.ctx.lineTo(q[0], q[1]); else this.ctx.moveTo(q[0], q[1]); });
+      this.ctx.closePath();
+    }
+    _face(face, alpha, stroke) {
+      const ctx = this.ctx, brightness = 0.86 + 0.14 * Math.max(0, dot(face.normal, unit([0.35, -0.55, 0.76])));
+      this._path(face.points); ctx.globalAlpha = alpha; ctx.fillStyle = shade(face.color, brightness); ctx.fill();
+      if (stroke) { ctx.globalAlpha = Math.min(1, alpha + 0.25); ctx.strokeStyle = face.stroke || '#455c70'; ctx.lineWidth = 0.85; ctx.stroke(); }
+      ctx.globalAlpha = 1;
+    }
+
+    _outerFaces() {
+      const d = this.description, type = d.type || (d.p && d.p.type), faces = [];
+      const outer = this.meshes.outer || this.meshes.cl;
+      if (type === 'noGB') {
+        const cap = this.meshes.cap;
+        if (cap) for (const f of cap.faces) faces.push(Object.assign({}, f, { color: COLORS.island }));
+        return faces;
+      }
+      if (!outer) return faces;
+      for (const f of outer.faces) {
+        if (type === 'CL_I' && d.halfspaces.cl) {
+          const pieces = splitPolygon(f.points, d.halfspaces.cl);
+          if (pieces.inside.length) faces.push(Object.assign({}, f, { points: pieces.inside, color: COLORS.cl }));
+          for (const points of pieces.outside) faces.push(Object.assign({}, f, { points, color: COLORS.island }));
+        } else faces.push(Object.assign({}, f, { color: COLORS.cl }));
+      }
+      return faces;
+    }
+
+    _geometry() {
+      const d = this.description;
+      const core = this.options.showCore && this.meshes.core ? this.meshes.core.faces.map(f => Object.assign({}, f, { color: COLORS.core })) : [];
+      if (d.valid === false) {
+        core.filter(f => dot(f.normal, this.forward) > EPS).forEach(f => this._face(f, 0.55, true));
+        return;
+      }
+      const exterior = this._outerFaces();
+      if ((d.type || (d.p && d.p.type)) === 'noGB') {
+        // The contact plane is internal: subtract the cap footprint from the core,
+        // and omit cap faces fully inside the core.
+        const exposed = [];
+        for (const f of core) {
+          const pieces = d.halfspaces.cap ? splitPolygon(f.points, d.halfspaces.cap).outside : [f.points];
+          for (const points of pieces) exposed.push(Object.assign({}, f, { points }));
+        }
+        for (const f of exterior) {
+          const pieces = d.halfspaces.core ? splitPolygon(f.points, d.halfspaces.core).outside : [f.points];
+          for (const points of pieces) exposed.push(Object.assign({}, f, { points }));
+        }
+        exposed.filter(f => dot(f.normal, this.forward) > EPS).sort((a, b) => dot(mean(a.points), this.forward) - dot(mean(b.points), this.forward)).forEach(f => this._face(f, 0.92, true));
+      } else {
+        const back = exterior.filter(f => dot(f.normal, this.forward) <= EPS);
+        const front = exterior.filter(f => dot(f.normal, this.forward) > EPS);
+        back.sort((a, b) => dot(mean(a.points), this.forward) - dot(mean(b.points), this.forward)).forEach(f => this._face(f, 0.18, true));
+        core.filter(f => dot(f.normal, this.forward) > EPS).forEach(f => this._face(f, 0.92, true));
+        front.sort((a, b) => dot(mean(a.points), this.forward) - dot(mean(b.points), this.forward)).forEach(f => this._face(f, this.options.showCore ? 0.48 : 0.92, true));
+      }
+    }
+
+    _section() {
+      const axis = { X: 0, Y: 1, Z: 2 }[this.sectionAxis], ctx = this.ctx;
+      const layers = [ ['outer', COLORS.island], ['cl', COLORS.cl], ['cap', COLORS.island], ['core', COLORS.core] ];
+      if (this.description.type !== 'CL_I') layers[0][1] = COLORS.cl;
+      for (const [key, color] of layers) {
+        if (this.description.valid === false && key !== 'core') continue;
+        if (key === 'core' && !this.options.showCore) continue;
+        if (this.description.type === 'noGB' && (key === 'outer' || key === 'cl')) continue;
+        const mesh = this.meshes[key]; if (!mesh) continue;
+        const points = sectionPolygon(mesh, axis); if (!points.length) continue;
+        this._path(points); ctx.globalAlpha = this.atoms ? 0.07 : 0.82; ctx.fillStyle = color; ctx.fill();
+        ctx.globalAlpha = 0.6; ctx.strokeStyle = color; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+      }
+      if (!this.atoms || this.description.valid === false) return;
+      const projected = this.points.map(p => ({ q: this._project(p.p), color: p.color, oxygen: p.oxygen })).sort((a, b) => a.q[2] - b.q[2]);
+      const radius = Math.max(0.55, Math.min(3, 0.47 * this.scale));
+      for (const p of projected) {
+        if (p.q[0] < -5 || p.q[0] > this.width + 5 || p.q[1] < -5 || p.q[1] > this.height + 5) continue;
+        ctx.fillStyle = p.color; ctx.globalAlpha = p.oxygen ? 0.63 : 0.93;
+        ctx.beginPath(); ctx.arc(p.q[0], p.q[1], radius * (p.oxygen ? 0.72 : 1), 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    _corner() {
+      const d = this.description, ctx = this.ctx, normal = this.forward;
+      const draw = (points, color, stroke) => {
+        if (polygonArea(points) < EPS) return;
+        this._path(points); ctx.globalAlpha = 1; ctx.fillStyle = color; ctx.fill();
+        ctx.strokeStyle = stroke || '#455c70'; ctx.lineWidth = 1.3; ctx.stroke();
+      };
+      // This is an opaque analytic section, not a projection of several surfaces.
+      const layers = d.type === 'noGB' ? [['cap', COLORS.island], ['core', COLORS.core]] :
+        [['outer', d.type === 'CL_I' ? COLORS.island : COLORS.cl], ['cl', COLORS.cl], ['core', COLORS.core]];
+      let core = [];
+      for (const [key, color] of layers) {
+        if (key === 'core' && !this.options.showCore) continue;
+        const mesh = this.meshes[key]; if (!mesh) continue;
+        const points = sectionPolygon(mesh, normal);
+        draw(points, color);
+        if (key === 'core') core = points;
+      }
+      // Invalid cuts stay visible: mark exactly the core area removed by the cut.
+      if (!core.length || d.type === 'noGB' || !d.halfspaces.outer) return;
+      const conflicts = splitPolygon(core, d.halfspaces.outer).outside;
+      for (const points of conflicts) draw(points, '#d95454', '#a32d2d');
+      const corner = core.slice().sort((a, b) => dot(b, this.right) + dot(b, this.up) - dot(a, this.right) - dot(a, this.up))[0];
+      const cuts = planeData(d.halfspaces.outer).filter(p => p.n.every(v => Math.abs(v) > EPS));
+      if (!cuts.length) return;
+      const cut = cuts.sort((a, b) => (a.d - dot(a.n, corner)) / norm(a.n) - (b.d - dot(b.n, corner)) / norm(b.n))[0];
+      const distance = (cut.d - dot(cut.n, corner)) / norm(cut.n);
+      const foot = corner.map((v, i) => v + distance * cut.n[i] / norm(cut.n));
+      const a = this._project(corner), b = this._project(foot);
+      ctx.strokeStyle = distance < -EPS ? '#a32d2d' : '#202e42'; ctx.fillStyle = ctx.strokeStyle;
+      ctx.lineWidth = 2; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(a[0], a[1], 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(b[0], b[1], 2.5, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    _hud() {
+      const ctx = this.ctx;
+      ctx.font = '12px system-ui, sans-serif'; ctx.textBaseline = 'middle';
+      const bx = 44, by = this.height - 47, length = 24;
+      ctx.lineWidth = 1.65;
+      [ [[1, 0, 0], '#ba6e66', 'X'], [[0, 1, 0], '#658d71', 'Y'], [[0, 0, 1], '#5e82b5', 'Z'] ].forEach(([v, color, label]) => {
+        const x = bx + dot(v, this.right) * length, y = by - dot(v, this.up) * length;
+        ctx.strokeStyle = color; ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(x, y); ctx.stroke();
+        if (Math.hypot(x - bx, y - by) < 3) { ctx.beginPath(); ctx.arc(bx, by, 2.4, 0, Math.PI * 2); ctx.stroke(); }
+        else ctx.fillText(label, x + (x < bx ? -10 : 4), y + (y < by ? -5 : 5));
+      });
+      const maxPx = Math.min(105, this.width * 0.2), targetNm = maxPx / this.scale / 10;
+      const base = Math.pow(10, Math.floor(Math.log10(Math.max(targetNm, 0.0001))));
+      let nm = base; for (const m of [1, 2, 5, 10]) if (base * m <= targetNm) nm = base * m;
+      const barPx = nm * 10 * this.scale, x = this.width - 25 - barPx, y = this.height - 27;
+      ctx.strokeStyle = '#33475c'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x, y - 4); ctx.lineTo(x, y); ctx.lineTo(x + barPx, y); ctx.lineTo(x + barPx, y - 4); ctx.stroke();
+      ctx.fillStyle = '#33475c'; ctx.textAlign = 'center'; ctx.fillText(Number(nm.toPrecision(3)) + ' nm', x + barPx / 2, y - 13); ctx.textAlign = 'left';
+    }
+
+    render() {
+      if (!this.ctx) return;
+      if (this.mode === 'atoms') this._initGPU();
+      const gpuMode = this.mode === 'atoms' && !!this.gpu;
+      if (this.gpuCanvas) this.gpuCanvas.style.display = gpuMode ? 'block' : 'none';
+      const ctx = this.ctx;
+      ctx.setTransform(this.dpr || 1, 0, 0, this.dpr || 1, 0, 0);
+      ctx.clearRect(0, 0, this.width, this.height);
+      if (!gpuMode) { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, this.width, this.height); }
+      if (!this.description) { ctx.fillStyle = '#64748b'; ctx.font = '14px system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillText('구조를 선택하면 미리보기가 표시됩니다.', this.width / 2, this.height / 2); ctx.textAlign = 'left'; return; }
+      this._setupProjection();
+      ctx.save(); ctx.beginPath(); ctx.rect(0, this.plotTop, this.width, this.plotBottom - this.plotTop); ctx.clip();
+      if (this.mode === 'atoms') { if (gpuMode) this._renderGPU(); else this._atoms2D(); }
+      else if (this.mode === 'section') this._section(); else if (this.mode === 'corner') this._corner(); else this._geometry();
+      ctx.restore();
+      this._hud();
+      if (this.description.valid === false) {
+        ctx.fillStyle = '#ad4545'; ctx.font = '12px system-ui, sans-serif'; ctx.textAlign = 'center';
+        const hasCore = this.mode !== 'atoms' && this.options.showCore && this.meshes.core && this.meshes.core.faces.length;
+        let note=hasCore?'입력 범위를 확인하세요. 코어만 표시합니다.':'입력 값을 확인하세요. 유효한 구조를 표시할 수 없습니다.';
+        if(this.mode==='corner')note=this.description.type==='noGB'?'접촉면 조건을 확인하세요. XYZ 생성은 차단됩니다.':this.description.R<3*this.description.q-EPS?'빨간 영역은 절단면이 침범한 코어입니다. XYZ 생성은 차단됩니다.':'입력값을 확인하세요. 이 단면은 좌표 생성 전 기하학적 표시입니다.';
+        ctx.fillText(note, this.width / 2, this.height - 16); ctx.textAlign = 'left';
+      }
+    }
+
+    destroy() {
+      if (this.observer) this.observer.disconnect();
+      for (const [name, handler, options] of this._listeners) this.canvas.removeEventListener(name, handler, options);
+      if (this.pendingFrame !== null && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.pendingFrame);
+      if (this.gpu) {
+        if (this.gpu.buffer) this.gpu.gl.deleteBuffer(this.gpu.buffer);
+        this.gpu.gl.deleteProgram(this.gpu.program);
+      }
+      if (this.gpuCanvas) this.gpuCanvas.remove();
+      this.canvas.style.position = this.originalCanvasPosition; this.canvas.style.zIndex = this.originalCanvasZIndex;
+      if (this.canvas.comnView === this) delete this.canvas.comnView;
+      this._listeners = [];
+    }
+  }
+  CoMnView.geometry = { polyhedron, clipPolygon, splitPolygon, polygonArea, sectionPolygon };
+  return CoMnView;
+});
+</script>
+<script>/* Local UI. All coordinates are generated by the embedded engine in a Worker. */
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const E = window.CoMnEngine;
+  const NAMES = {shallow:'Shallow shell',CL:'CoMn-CL',CL_I:'CoMn-CL+I',noGB:'CoMn-no GB'};
+  const PRESETS = {
+    shallow:{coreNm:11,clNm:0,heightNm:.2021,ratio:1/3},
+    CL:{coreNm:11,clNm:3,heightNm:0,ratio:.5},
+    CL_I:{coreNm:11,clNm:3,heightNm:2,ratio:105/170},
+    noGB:{coreNm:11,clNm:0,heightNm:5,ratio:105/170}
+  };
+  let state = {type:'CL',...PRESETS.CL,latticeA:8.084,vacuumNm:1.2,contactFraction:1,growthFace:'+Z',registry:[.318,.318,.318]};
+  let description, result = null, resultKey = '', worker = null, workerURL = '', revision = 0, mode = 'geometry', view = 'iso';
+  let lastBlob = null, blobFormat = '', pendingSave = false, atomsVisited = false, heightRepair = null;
+  const viewer = new window.CoMnView($('preview'), {onViewChange: function (info) {
+    if (info && info.view) { view = info.view; updateViewButtons(); }
+    updatePreviewDetail();
+  }});
+
+  function engineParams() {
+    return {type:state.type,coreNm:state.coreNm,
+      shellNm:state.type==='CL'?state.clNm:state.type==='CL_I'?state.clNm+state.heightNm:state.heightNm,
+      clNm:state.type==='CL'||state.type==='CL_I'?state.clNm:0,ratio:state.ratio,
+      latticeA:state.latticeA,vacuumNm:state.vacuumNm,contactFraction:state.contactFraction,
+      growthFace:state.growthFace,registry:[.318,.318,.318]};
+  }
+  function key() { return JSON.stringify(engineParams()); }
+  function fmt(value, places=3) { return Number.isFinite(value)?Number(value.toFixed(places)).toString():'—'; }
+  function safeText(value) { return typeof value==='string'?value:value.message||JSON.stringify(value); }
+  function shapeName(r) {
+    if (!Number.isFinite(r)) return '절단비를 입력하세요';
+    if (Math.abs(r-1/3)<1e-6) return 'Cube · 정육면체';
+    if (Math.abs(r-.5)<1e-6) return 'Cuboctahedron · 입방팔면체';
+    if (Math.abs(r-2/3)<1e-6) return 'Regular truncated octahedron';
+    if (Math.abs(r-1)<1e-6) return 'Octahedron · 팔면체';
+    return r<.5?'Truncated cube 계열':'Truncated octahedron 계열';
+  }
+  function syncInputs() {
+    document.querySelectorAll('[data-key]').forEach(el => { if (document.activeElement!==el) el.value=String(state[el.dataset.key]); });
+    $('face-select').value=state.growthFace;
+    document.querySelectorAll('[data-type]').forEach(el => el.setAttribute('aria-pressed',String(el.dataset.type===state.type)));
+    $('cl-field').hidden=!(state.type==='CL'||state.type==='CL_I');
+    $('height-field').hidden=state.type==='CL';
+    $('island-options').hidden=state.type!=='noGB';
+    $('contact-row').hidden=state.type!=='noGB';
+    $('ratio-number').disabled=state.type==='shallow';
+    $('ratio-range').disabled=state.type==='shallow';
+    document.querySelectorAll('[data-ratio]').forEach(el=>el.disabled=state.type==='shallow');
+    $('ratio-hint').textContent=state.type==='shallow'?'Shallow shell은 정육면체 외곽을 유지하므로 1/3로 고정합니다.':'H/R이 커지면 축 방향의 평평한 면이 작아지고 팔면체에 가까워집니다. 코어 크기와 셸 높이에 따라 허용 상한이 달라집니다.';
+    $('height-number').min=state.type==='CL_I'?'0':'0.05';
+    $('height-range').min=state.type==='CL_I'?'0':'0.05';
+    $('height-label').textContent=state.type==='CL_I'?'Island 추가 높이':state.type==='noGB'?'섬 높이':'Shell 두께';
+    $('height-hint').textContent=state.type==='CL_I'?'CL 위에서 더 자라는 높이입니다. 전체 셸 = CL + island.':state.type==='noGB'?'코어 접촉면에서 섬 꼭대기까지의 높이입니다.':'코어 면에서 얇은 셸 바깥면까지의 두께입니다.';
+    $('cl-hint').textContent=state.type==='CL_I'?'이 값을 바꾸면 전체 셸 높이도 함께 바뀝니다.':'코어 면에서 CL 바깥면까지의 높이입니다.';
+  }
+  function updateViewButtons() {
+    document.querySelectorAll('[data-view]').forEach(el=>{el.setAttribute('aria-pressed',String(el.dataset.view===view));el.disabled=mode==='corner';});
+  }
+  function updatePreviewDetail() {
+    $('atom-controls').hidden=mode!=='atoms';
+    $('atom-help').hidden=mode!=='atoms';
+    $('oxygen-legend').hidden=mode==='geometry'||mode==='corner'||!$('show-oxygen').checked;
+    $('cl-legend-label').textContent=mode==='geometry'?'노출된 Shallow / CL 표면':'Shallow / CL';
+    $('island-legend-label').textContent=mode==='geometry'?'노출된 Island 표면':'Island';
+    if (mode==='geometry') $('preview-detail').textContent='반투명 표면 투영 · 코어와 절단면의 간격은 꼭짓점 단면에서 확인';
+    else if(mode==='corner') $('preview-detail').textContent=state.type==='noGB'?'접촉면의 꼭짓점을 지나는 대각 단면 · 원자 생성 없이 표시':'코어 꼭짓점을 지나는 대각 단면 · 빨간 부분은 절단면 밖으로 나온 코어';
+    else if(mode==='atoms') {
+      const info=viewer.getInfo?viewer.getInfo():{};
+      const shown=Number(info.shownAtoms)||0,total=Number(info.totalAtoms)||0;
+      $('preview-detail').textContent=total?`${shown.toLocaleString()} / ${total.toLocaleString()} 원자${info.sampled?' · 일부 표시':''}${info.cutaway?' · 앞쪽 절반 열림':''}`:'실제 XYZ 좌표의 원자를 개별 구로 표시합니다.';
+      $('preview').dataset.renderer=info.renderer||'';
+      $('preview').dataset.shownAtoms=String(shown);
+      $('preview').dataset.totalAtoms=String(total);
+      $('preview').dataset.sampled=String(!!info.sampled);
+      if(info.sampled)$('atom-help').textContent='현재 브라우저는 미리보기 원자를 일부만 표시합니다. XYZ에는 모든 원자가 포함됩니다. 드래그: 회전 · 휠: 확대 · Shift+드래그: 이동';
+      else $('atom-help').textContent='드래그: 회전 · 휠: 확대 · Shift+드래그: 이동 · 구 크기는 표시용이며 XYZ 좌표는 그대로입니다.';
+    }
+    else {
+      const info=viewer.getInfo?viewer.getInfo():{};
+      const thickness=info.sliceThicknessNm||state.latticeA/20;
+      const axis=info.sectionAxis|| (view==='Y'?'Y':view==='Z'?'Z':'X');
+      $('preview-detail').textContent=`${axis} 중앙 단면 · 두께 ${fmt(thickness,4)} nm`+(info.shownAtoms?` · ${info.shownAtoms.toLocaleString()}개 ${info.sampled?'일부 ':''}표시`:'');
+    }
+  }
+  function updateEmpty() {
+    $('atom-empty').hidden=mode==='geometry'||mode==='corner'||!!result;
+    const cutMessage=state.type==='noGB'?'섬의 정사각형 접촉면 꼭짓점까지 잘리는 설정입니다.':'CL/셸의 절단은 허용됩니다. 현재는 코어의 꼭짓점까지 잘리는 설정입니다.';
+    $('atom-empty-message').textContent=worker?'현재 설정의 원자를 계산하고 있습니다.':description&&!description.valid?heightRepair?`${cutMessage} 절단비 아래에서 필요한 높이를 적용하거나 절단비를 낮춰 주세요.`:(description.errors[0]||'입력값을 확인해 주세요.'):mode==='atoms'?'현재 설정으로 원자를 생성하면 전체 입자의 실제 3D 원자 배치를 볼 수 있습니다.':'현재 설정으로 원자를 생성하면 중앙 원자 단면을 볼 수 있습니다.';
+    $('preview-generate').disabled=!!worker||!description||!description.valid;
+  }
+  function cancel(message='생성을 취소했습니다.') {
+    if (worker) worker.terminate();
+    if (workerURL) URL.revokeObjectURL(workerURL);
+    worker=null;workerURL='';pendingSave=false;
+    $('cancel').hidden=true;$('progress-wrap').hidden=true;
+    if (message) $('status').textContent=message;
+    setButtons();
+  }
+  function setButtons() {
+    const valid=description&&description.valid;
+    $('generate').disabled=!valid||!!worker;
+    $('download').disabled=!valid||!!worker;
+    $('format-select').disabled=!!worker;
+    $('download').textContent=result&&resultKey===key()?'XYZ 다운로드':'XYZ 생성·다운로드';
+    updateEmpty();
+  }
+  function resetCounts() {
+    ['count-total','count-co','count-mn','count-o'].forEach(id=>$(id).textContent='—');
+    $('actual-size').textContent='';
+  }
+  function getHeightRepair() {
+    if(description.valid||state.type==='shallow')return null;
+    const required=description.metrics&&description.metrics.requiredMinShellNm;
+    const p=engineParams();
+    if(!Number.isFinite(required)||!Number.isFinite(p.shellNm)||required<=p.shellNm+1e-9)return null;
+    const key=state.type==='CL'?'clNm':'heightNm';
+    const step=state.type==='CL'?.1:.01;
+    const requiredInput=state.type==='CL_I'?required-state.clNm:required;
+    const value=Number((Math.ceil((requiredInput-1e-9)/step)*step).toFixed(2));
+    const total=state.type==='CL_I'?state.clNm+value:value;
+    const candidate={...p,shellNm:total,clNm:state.type==='CL'?value:p.clNm};
+    if(value>20||!E.describe(candidate).valid)return null;
+    const label=state.type==='CL'?'CL 두께':state.type==='CL_I'?'Island 추가 높이':'섬 높이';
+    return {key,value,total,required,label};
+  }
+  function showValidation() {
+    const errors=description.errors||[];
+    const warnings=description.warnings||[];
+    $('errors').replaceChildren();
+    errors.forEach(msg=>{ const p=document.createElement('p');p.textContent=safeText(msg);$('errors').append(p); });
+    $('errors').hidden=!errors.length;
+    $('warnings').replaceChildren();
+    warnings.forEach(msg=>{const p=document.createElement('p');p.textContent=safeText(msg);$('warnings').append(p);});
+    $('warnings').hidden=!warnings.length;
+    heightRepair=getHeightRepair();
+    $('ratio-repair').hidden=!heightRepair;
+    $('ratio-number').setAttribute('aria-invalid',String(!description.valid&&!!heightRepair));
+    if(heightRepair){
+      const current=engineParams().shellNm;
+      const boundary=state.type==='noGB'?'지정한 접촉면의 꼭짓점까지 잘립니다.':'CL/셸 절단은 허용되지만, 현재는 코어 꼭짓점까지 잘립니다.';
+      $('ratio-repair-message').textContent=`${boundary} H/R ${fmt(state.ratio,6)}에 필요한 전체 셸 높이는 최소 ${fmt(heightRepair.required,4)} nm입니다(현재 ${fmt(current,4)} nm). 코어 크기와 절단비는 유지하고 높이만 변경합니다.`;
+      $('apply-height-repair').textContent=`${heightRepair.label}를 ${fmt(heightRepair.value,2)} nm로 변경`;
+    }
+  }
+  function refresh(invalidate=true) {
+    if (invalidate) {
+      revision++;
+      if (worker) cancel('설정 변경으로 생성을 취소했습니다.');
+      result=null;resultKey='';lastBlob=null;blobFormat='';viewer.setAtoms(null);resetCounts();
+      $('status').textContent='';
+    }
+    syncInputs();
+    try { description=E.describe(engineParams()); }
+    catch (e) {description={valid:false,errors:[e.message],warnings:[],halfspaces:{}};}
+    showValidation();
+    viewer.setModel(description);
+    $('preview-title').textContent=NAMES[state.type];
+    $('shape-label').textContent=state.type==='noGB'?'단일 섬 · 면 구성은 절단비에 따라 변함':shapeName(state.ratio);
+    const p=engineParams();
+    $('total-height').textContent=fmt(p.shellNm)+' nm';
+    const bounds=description.bounds;
+    $('outer-size').textContent=bounds&&bounds.min&&bounds.max?bounds.max.map((v,i)=>fmt((v-bounds.min[i])/10,2)).join(' × ')+' nm':'—';
+    $('contact-size').textContent=fmt(state.coreNm*state.contactFraction)+' nm';
+    const q=state.coreNm*5,H=q+10*p.shellNm,b=q*state.contactFraction;
+    const maxRatio=Math.min(1,H/(state.type==='noGB'?q+2*b:3*q));
+    $('max-ratio').textContent=Number.isFinite(maxRatio)?'≤ '+fmt(Math.floor(maxRatio*1e6)/1e6,6):'—';
+    const gap=(description.R-(state.type==='noGB'?q+2*b:3*q))/(Math.sqrt(3)*10);
+    $('corner-clearance-label').textContent=state.type==='noGB'?'접촉 꼭짓점 → 경사면':'코어 꼭짓점 → 경사면';
+    $('corner-clearance').textContent=Number.isFinite(gap)?`${gap<0?'침범 ':'여유 '}${fmt(Math.abs(gap),4)} nm`:'—';
+    $('corner-clearance').style.color=gap<0?'var(--bad)':'';
+    updateEmpty();
+    $('generation-summary').textContent='형상을 확인한 뒤 생성하세요. 다운로드에는 모든 원자가 포함됩니다.';
+    updatePreviewDetail();setButtons();
+  }
+  function triggerDownload(blob,name) {
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=name;document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),30000);
+  }
+  function filename() {
+    return `CoMn_${state.type}_core${fmt(state.coreNm)}nm_shell${fmt(engineParams().shellNm)}nm.xyz`;
+  }
+  function workerMain() {
+    self.onmessage=function(event) {
+      const {params,extended,makeXYZ}=event.data;
+      try {
+        let last=0;
+        const result=self.CoMnEngine.generate(params,p=>{
+          const now=Date.now();if(now-last>80||p.fraction===1){self.postMessage({kind:'progress',progress:p});last=now;}
+        });
+        let blob=null;
+        if(makeXYZ) {
+          self.postMessage({kind:'progress',progress:{stage:'export',fraction:.95}});
+          blob=new Blob(Array.from(self.CoMnEngine.textChunks(result,params,{extended})),{type:'chemical/x-xyz;charset=utf-8'});
+        }
+        self.postMessage({kind:'done',result,blob},[result.positions.buffer,result.elements.buffer,result.regions.buffer]);
+      }catch(error){self.postMessage({kind:'error',message:error.message||String(error)});}
+    };
+  }
+  function receiveResult(r,blob,makeXYZ,format,jobKey,jobRevision) {
+    if (jobRevision!==revision) return;
+    result=r;resultKey=jobKey;lastBlob=blob;blobFormat=blob?format:'';
+    description.warnings=r.warnings||description.warnings;showValidation();
+    for(const [id,k] of [['count-total','total'],['count-co','Co'],['count-mn','Mn'],['count-o','O']]) $(id).textContent=Number(r.counts[k]).toLocaleString();
+    viewer.setAtoms(result);$('atom-empty').hidden=true;
+    $('generation-summary').textContent=`Core ${r.counts.core.toLocaleString()} · CL/shallow ${r.counts.CL.toLocaleString()} · Island ${r.counts.island.toLocaleString()}`;
+    const ab=r.actualBounds,cl=r.cell;
+    const spans=ab&&ab.min&&ab.max?ab.max.map((v,i)=>fmt((v-ab.min[i])/10,3)).join(' × '):'';
+    const dims=Array.isArray(cl)?cl.map(v=>Array.isArray(v)?Math.hypot(...v):v):[];
+    $('actual-size').textContent=(spans?`실제 원자 폭: ${spans} nm. `:'')+(dims.length===3?`셀: ${dims.map(v=>fmt(v/10,3)).join(' × ')} nm.`:'');
+    $('status').textContent='생성 완료. 입력 형상으로 절단한 완화 전 좌표입니다.';
+    updatePreviewDetail();setButtons();
+    if(makeXYZ&&blob) {triggerDownload(blob,filename());$('status').textContent='XYZ 파일을 다운로드했습니다. 원자 수와 셀 정보는 위에서 확인할 수 있습니다.';}
+  }
+  function run(makeXYZ) {
+    if (!description.valid||worker) return;
+    const params=engineParams(),jobKey=key(),jobRevision=revision,format=$('format-select').value;
+    if(makeXYZ&&result&&resultKey===jobKey&&lastBlob&&blobFormat===format){triggerDownload(lastBlob,filename());$('status').textContent='현재 설정의 XYZ를 다운로드했습니다.';return;}
+    $('status').textContent='';$('progress-wrap').hidden=false;$('progress').value=0;$('progress-percent').textContent='0%';$('progress-text').textContent='원자 위치를 계산하고 있습니다.';$('cancel').hidden=false;
+    const src=$('engine-code').textContent+'\n('+workerMain.toString()+')();';
+    workerURL=URL.createObjectURL(new Blob([src],{type:'text/javascript'}));
+    try{worker=new Worker(workerURL);}catch(e){cancel();$('status').textContent='이 브라우저에서 계산 작업을 시작하지 못했습니다. HTML을 Chrome 또는 Edge에서 열어 주세요.';return;}
+    const jobWorker=worker;
+    pendingSave=makeXYZ;setButtons();
+    worker.onmessage=event=>{
+      const msg=event.data;
+      if(jobRevision!==revision||worker!==jobWorker)return;
+      if(msg.kind==='progress') {
+        let f=msg.progress.stage==='export'?.95:(Number(msg.progress.fraction)||0)*.9;
+        f=Math.max(0,Math.min(.99,f));$('progress').value=f;$('progress-percent').textContent=Math.round(f*100)+'%';
+        $('progress-text').textContent=msg.progress.stage==='export'?'XYZ 텍스트를 만들고 있습니다.':msg.progress.stage==='counting'?'형상 안의 원자 수를 세고 있습니다.':'원자 좌표를 생성하고 있습니다.';
+      } else if(msg.kind==='done') {
+        cancel('');receiveResult(msg.result,msg.blob,makeXYZ,format,jobKey,jobRevision);
+      } else if(msg.kind==='error') {cancel('');$('status').textContent=msg.message;}
+    };
+    worker.onerror=e=>{if(worker!==jobWorker||jobRevision!==revision)return;cancel('');$('status').textContent='생성 오류: '+(e.message||'브라우저 작업을 다시 시도해 주세요.');};
+    worker.postMessage({params,extended:format==='extended',makeXYZ});
+  }
+  document.querySelectorAll('[data-key]').forEach(el=>el.addEventListener('input',()=>{
+    const value=el.value===''?NaN:Number(el.value);state[el.dataset.key]=value;
+    document.querySelectorAll(`[data-key="${el.dataset.key}"]`).forEach(other=>{if(other!==el)other.value=el.value;});refresh();
+  }));
+  document.querySelectorAll('[data-type]').forEach(el=>el.addEventListener('click',()=>{
+    const type=el.dataset.type,core=state.coreNm;state={...state,...PRESETS[type],coreNm:core,type};refresh();
+  }));
+  document.querySelectorAll('[data-ratio]').forEach(el=>el.addEventListener('click',()=>{state.ratio=Number(el.dataset.ratio);refresh();}));
+  $('apply-height-repair').addEventListener('click',()=>{
+    const fix=getHeightRepair();if(!fix)return;
+    state[fix.key]=fix.value;refresh();
+    $('status').textContent=`${fix.label}를 ${fmt(fix.value,2)} nm로 변경했습니다. H/R ${fmt(state.ratio,6)}으로 생성할 수 있습니다.`;
+  });
+  $('preset').addEventListener('click',()=>{state={type:state.type,...PRESETS[state.type],latticeA:8.084,vacuumNm:1.2,contactFraction:1,growthFace:'+Z',registry:[.318,.318,.318]};refresh();});
+  $('face-select').addEventListener('change',()=>{state.growthFace=$('face-select').value;refresh();});
+  document.querySelectorAll('[data-mode]').forEach(el=>el.addEventListener('click',()=>{
+    const previousMode=mode;mode=el.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b===el)));
+    viewer.setMode(mode);
+    if(mode==='section'&&!['X','Y','Z'].includes(view)){view='X';viewer.setView('X');}
+    if(mode==='atoms'){
+      if(!atomsVisited){atomsVisited=true;$('show-oxygen').checked=true;viewer.setOptions({showOxygen:true});}
+      if(previousMode==='section'||previousMode==='corner'){view='iso';viewer.setView('iso');}
+    }
+    updateViewButtons();updateEmpty();updatePreviewDetail();
+    if(mode==='atoms'&&!result&&description.valid&&!worker)run(false);
+  }));
+  document.querySelectorAll('[data-view]').forEach(el=>el.addEventListener('click',()=>{view=el.dataset.view;viewer.setView(view);updateViewButtons();updatePreviewDetail();}));
+  $('show-core').addEventListener('change',()=>viewer.setOptions({showCore:$('show-core').checked}));
+  $('show-oxygen').addEventListener('change',()=>{viewer.setOptions({showOxygen:$('show-oxygen').checked});updatePreviewDetail();});
+  $('atom-scale').addEventListener('input',()=>{const scale=Number($('atom-scale').value);$('atom-scale-value').textContent=scale.toFixed(1)+'×';viewer.setOptions({atomScale:scale});updatePreviewDetail();});
+  $('atom-cutaway').addEventListener('change',()=>{viewer.setOptions({cutaway:$('atom-cutaway').checked});updatePreviewDetail();});
+  $('reset-view').addEventListener('click',()=>{viewer.resetView();updatePreviewDetail();});
+  $('preview-generate').addEventListener('click',()=>run(false));
+  $('generate').addEventListener('click',()=>run(false));$('download').addEventListener('click',()=>run(true));$('cancel').addEventListener('click',()=>cancel());
+  $('save-settings').addEventListener('click',()=>{triggerDownload(new Blob([JSON.stringify({schema:'comn-builder-v1',ui:state,parameters:engineParams()},null,2)],{type:'application/json'}),`CoMn_${state.type}_settings.json`);});
+  $('load-settings').addEventListener('click',()=>$('settings-file').click());
+  $('settings-file').addEventListener('change',async()=>{
+    const file=$('settings-file').files[0];if(!file)return;
+    try{
+      const data=JSON.parse(await file.text());if(data.schema!=='comn-builder-v1'||!data.ui||!PRESETS[data.ui.type])throw new Error('이 도구에서 저장한 설정 JSON을 선택해 주세요.');
+      const next={...state};for(const k of ['type','coreNm','clNm','heightNm','ratio','latticeA','vacuumNm','contactFraction','growthFace'])if(Object.hasOwn(data.ui,k))next[k]=data.ui[k];
+      for(const k of ['coreNm','clNm','heightNm','ratio','latticeA','vacuumNm','contactFraction'])if(typeof next[k]!=='number'||!Number.isFinite(next[k]))throw new Error('숫자 파라미터가 올바르지 않습니다.');
+      state=next;refresh();$('status').textContent='저장한 설정을 불러왔습니다.';
+    }catch(e){$('status').textContent=e.message;}
+    $('settings-file').value='';
+  });
+  refresh(false);
+})();
+</script>
+</body>
+</html>
