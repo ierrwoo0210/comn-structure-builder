@@ -1,0 +1,96 @@
+{
+  "status": "Source-grounded reconstruction on a Gaussian projected image; not an exact author-code or experimental reproduction.",
+  "source_npz_sha256": "1715a9595320b110ffd438d44b1e9b6c0b9d5ce93e3dc3e7af5c35ef857c7fdf",
+  "mn_dft_source_path": "C:\\Users\\riphy\\OneDrive\\바탕 화면\\CONTCAR_Mn3O4",
+  "mn_dft_sha256": "8acfbc34ea735a9b9b0e378b3eda26f31d18cdf11d3c73f8e4df3f7f0ccacfe9",
+  "source_image": "images.npz:image_s060; all individual atoms projected [100]; Gaussian0.60A plus lowpass0.25A; existing fitted centers reused.",
+  "reference": {
+    "n": 242,
+    "minimum_proxy_interface_clearance_nm": 3.3319894767731677,
+    "minimum_fitted_site_clearance_lower_bound_nm": 3.3291615267794774,
+    "required_clearance_nm": 3.279408800814145,
+    "rule": "More conservative than SI: >=4 conventional Co cell lengths from final lateral Mn cations. Stored distance is final coordinate-proxy to Mn; subtract proxy-to-imagefit shift by triangle inequality to bound fitted-site clearance. All reference sites accepted in every prior Gaussian case.",
+    "center_2d_A": [
+      117.04075244778792,
+      117.01576686847127
+    ],
+    "conventional_basis_A": [
+      [
+        8.198506814669535,
+        0.006335598586620747
+      ],
+      [
+        0.015780610733252765,
+        8.161299709492617
+      ]
+    ]
+  },
+  "anchor": {
+    "cell_id": 3755,
+    "label": [
+      27,
+      26
+    ],
+    "initial_xy_A": [
+      53.006788,
+      50.985788
+    ],
+    "nominal_corner_A": [
+      55.0,
+      55.0
+    ],
+    "rule": "Nearest fitted lattice site INSIDE projected Co core; tie resolved by larger h. Not the exact geometric interface corner."
+  },
+  "paths": "Core -3 and shell +1..+7 relative to the chosen core-corner site. Bend label = anchor+(2k,2k). s<=0: bend+(2s,0); s>0: bend+(0,-2s). Every plotted point uses its actual image-fitted center and site derivative.",
+  "distance": "Signed integer horizontal/vertical valley-repeat count; unit vectors2H. NOT diagonal nearest-neighbor |B|, and NOT conventional4H. This is the explicit reconstruction choice consistent with Fig4 scale; author exact basis not published.",
+  "derivative": {
+    "formula": "u=measured-reference; eps=sym(grad u); theta=(G_yx-G_xy)/2",
+    "sigma_primitive_cells": 1.5,
+    "sigma_physical_nm": 0.43380607493584444,
+    "note": "2D primitive valley basis B=[H_x+H_y,-H_x+H_y]. Path unit2H differs; SI does not disclose numeric basis. Alternative axial-width sensitivity exported.",
+    "sensitivity": [
+      {
+        "component": "eps_xx",
+        "median_abs_difference_pp": 0.3503857246956496,
+        "max_abs_difference_pp": 1.752317504455042
+      },
+      {
+        "component": "eps_yy",
+        "median_abs_difference_pp": 0.32616738867902795,
+        "max_abs_difference_pp": 1.808548162418859
+      },
+      {
+        "component": "eps_xy",
+        "median_abs_difference_pp": 0.10904474595166458,
+        "max_abs_difference_pp": 1.270041876213808
+      }
+    ]
+  },
+  "aspect": "Raw norm((I+G)C_y)/norm((I+G)C_x); no normalization to core and no max(r,1/r).",
+  "area": "det((I+G)C)/100 nm2 where C=4H; conventional-cell-equivalent projected area.",
+  "reference_lines": "DFT default, literature alternate; both converted against current core x/y metric. No pasted0.85/16.8% constants.",
+  "white_glyphs": "Display only centered at actual fitted sites. SI specifies strain exaggeration6. Selected explicit implementation: I+6sym(G)+skew(G), baseline conventional cell scaled0.20; rotation not exaggerated. Author exact glyph algorithm unavailable.",
+  "actual_cells": "actual_cell_vertices.json contains quadrilaterals formed by four measured sites at h/v+-2; no glyph distortion applied.",
+  "verification": {
+    "profile_rows": 136,
+    "valid_rows": 136,
+    "exact_existing_lattice_ids": true,
+    "profile_positions_match_fits": true,
+    "profiles_match_site_strain": true,
+    "area_basis_identity": true,
+    "analytic_gradient_max_error": {
+      "translation": 1.06626998759832e-14,
+      "normal": 1.013772399360846e-14,
+      "symmetric_shear": 1.0536710393083126e-14,
+      "simple_shear": 1.06626998759832e-14,
+      "finite_rotation_infinitesimal_convention": 1.099120794378905e-14,
+      "fresh_core_reference_global_affine_zero": 6.909648918820409e-16
+    }
+  },
+  "limits": [
+    "Gaussian projection is not multislice HAADF; experimental scan distortions are absent.",
+    "Front/back Mn signal remains in projected core. Core reference is not pure-element image.",
+    "Paths chosen for this particle; not the coordinates of the experimental particle.",
+    "Raw author images and MATLAB not available; exact path basis, derivative discretization and glyph formula cannot be certified identical."
+  ]
+}

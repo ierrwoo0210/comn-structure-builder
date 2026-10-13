@@ -1,0 +1,97 @@
+{
+  "dft": {
+    "eps_xx": {
+      "co": 0.0,
+      "mn_a_sqrt2": 1.221198860898065,
+      "mn_c": 17.25013953821295
+    },
+    "eps_yy": {
+      "co": 0.0,
+      "mn_a_sqrt2": 1.6828208029668668,
+      "mn_c": 17.784861886205007
+    },
+    "aspect": {
+      "co": 0.9954601776541653,
+      "mn_high": 1.1583555703518436,
+      "mn_low": 0.8632927795186897
+    },
+    "area_nm2": {
+      "co": 0.6691037130522065,
+      "mn": 0.797730010250932
+    }
+  },
+  "literature": {
+    "eps_xx": {
+      "co": 0.0,
+      "mn_a_sqrt2": -0.5559638059537297,
+      "mn_c": 15.167099602293344
+    },
+    "eps_yy": {
+      "co": 0.0,
+      "mn_a_sqrt2": -0.1024466610111685,
+      "mn_c": 15.692322191821283
+    },
+    "aspect": {
+      "co": 0.9954601776541653,
+      "mn_high": 1.1581096666024946,
+      "mn_low": 0.8634760842068304
+    },
+    "area_nm2": {
+      "co": 0.6691037130522065,
+      "mn": 0.7698007068841778
+    }
+  },
+  "dft_bulk": {
+    "a_sqrt2_A": 8.298642259334695,
+    "c_A": 9.612778487457552,
+    "projected_area_nm2": 0.797730010250932,
+    "conventional_vectors_A": [
+      [
+        5.8715321690209175,
+        0.0005818381854098,
+        8.50224868405e-05
+      ],
+      [
+        0.0005774241834672,
+        5.865683572718491,
+        -0.0018560721555346
+      ],
+      [
+        0.0001386341776552,
+        -0.0030483297695581,
+        9.612778880660652
+      ]
+    ],
+    "interpretation": "Beam parallel to a+b; basal vector a-b and c projected perpendicular to beam. a*sqrt(2) is exact for tetragonal a=b, gamma=90; actual DFT vectors retained."
+  },
+  "literature_bulk": {
+    "a_sqrt2_A": 8.152941187080893,
+    "c_A": 9.442,
+    "projected_area_nm2": 0.7698007068841778,
+    "conventional_vectors_A": [
+      [
+        5.765,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        5.765,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        9.442
+      ]
+    ],
+    "interpretation": "Beam parallel to a+b; basal vector a-b and c projected perpendicular to beam. a*sqrt(2) is exact for tetragonal a=b, gamma=90; actual DFT vectors retained."
+  },
+  "core_x_A": 8.198522002035363,
+  "core_y_A": 8.161302168647705,
+  "core_area_nm2": 0.6691037130522065,
+  "horizontal_repeat_nm": 0.4099261001017681,
+  "vertical_repeat_nm": 0.40806510843238525,
+  "source": "Oh et al. Nature577,359-363(2020), DOI10.1038/s41586-019-1899-3; user CONTCAR_Mn3O4",
+  "note": "Both line sets use THIS image-fitted Co reference. Literature version uses only paper bulk Mn constants, not paper normalized numeric strain lines."
+}
